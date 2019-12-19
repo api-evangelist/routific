@@ -1,0 +1,60 @@
+{
+    "name": "Routific",
+    "description": "We provide a solution to automate and optimize your routing and scheduling operations. Whether you deliver groceries, distribute compost bins, or pick up laundry ??? any Vehicle Routing Problem for that matter ??? we got your back",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/api-evangelist-site\/company\/logos\/",
+    "tags": [
+        "apis.io import",
+        "directions",
+        "have api",
+        "maps",
+        "profile",
+        "routes"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/routific\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "Routific",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/api-evangelist-site\/company\/logos\/",
+            "humanURL": "https:\/\/routific.com\/",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/routific-openapi.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "API.json - Authoritative",
+            "url": "https:\/\/raw.githubusercontent.com\/picsoung\/apis.json\/master\/routific.json"
+        },
+        {
+            "type": "Blog",
+            "url": "https:\/\/blog.routific.com\/"
+        },
+        {
+            "type": "Blog RSS",
+            "url": "https:\/\/blog.routific.com\/feed"
+        },
+        {
+            "type": "Github",
+            "url": "https:\/\/github.com\/routific"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/routific"
+        },
+        {
+            "type": "Website",
+            "url": "https:\/\/routific.com\/"
+        }
+    ]
+}
