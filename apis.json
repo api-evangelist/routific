@@ -10,8 +10,8 @@
         "profile",
         "routes"
     ],
-    "created": "2019-12-19",
-    "modified": "2019-12-19",
+    "created": "2019-12-21",
+    "modified": "2019-12-21",
     "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/routific\/master\/apis.json",
     "specificationVersion": "0.14",
     "apis": [
@@ -24,8 +24,8 @@
             "tags": [],
             "properties": [
                 {
-                    "type": "x-openapi",
-                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/routific-openapi.json"
+                    "type": "x-postman-collecction",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/routific\/master\/routific-postman-collection.json"
                 }
             ]
         }
@@ -35,6 +35,10 @@
         {
             "type": "API.json - Authoritative",
             "url": "https:\/\/raw.githubusercontent.com\/picsoung\/apis.json\/master\/routific.json"
+        },
+        {
+            "type": "APIs.json",
+            "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/apis.json"
         },
         {
             "type": "Blog",
