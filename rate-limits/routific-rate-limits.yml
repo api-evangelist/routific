@@ -1,0 +1,54 @@
+apiCommonsRateLimits: 0.1
+info:
+  title: Routific Rate Limits
+  description: Routific Route Optimization API enforces per-account daily request quotas and per-problem visit limits. Accounts hitting limits receive HTTP 429 with ERR_REACHED_DAILY_QUOTA or ERR_REACHED_STOP_LIMIT and can request increases via support@routific.com.
+  provider: Routific
+  url: https://docs.routific.com/reference/error-codes
+  modified: '2026-05-25'
+policies:
+- id: daily-request-quota
+  name: Daily Request Quota
+  description: Per-account daily limit on the number of API requests. Exceeding it returns HTTP 429 with code ERR_REACHED_DAILY_QUOTA.
+  scope: account
+  limit: account-specific
+  timeFrame: day
+  errorCode: ERR_REACHED_DAILY_QUOTA
+  httpStatus: 429
+  remediation: Contact support@routific.com to request an increase.
+- id: per-problem-visit-limit
+  name: Per-Problem Visit Limit (Synchronous)
+  description: Synchronous /v1/vrp endpoint times out for large problems. Use /v1/vrp-long or /v1/pdp-long for problems > 60 visits.
+  scope: request
+  errorCode: ERR_VRP_TIMEOUT
+  httpStatus: 408
+  remediation: Switch to the long-running /v1/vrp-long endpoint.
+- id: per-problem-visit-limit-async
+  name: Per-Problem Visit Limit (Asynchronous)
+  description: The async /v1/vrp-long and /v1/pdp-long endpoints have a hard limit of 2,500 visits per optimization call.
+  scope: request
+  limit: 2500
+  unit: visits
+  errorCode: ERR_REACHED_STOP_LIMIT
+  httpStatus: 429
+  remediation: Contact support@routific.com to discuss problem sizes above 2,500 visits.
+processingTimes:
+  description: Approximate processing times for /vrp-long across problem sizes.
+  rows:
+  - visits: 100
+    averageSeconds: 2
+  - visits: 200
+    averageSeconds: 8
+  - visits: 300
+    averageSeconds: 20
+  - visits: 400
+    averageSeconds: 30
+  - visits: 500
+    averageSeconds: 90
+  - visits: 1000
+    averageSeconds: 250
+  - visits: 1500
+    averageSeconds: 500
+  - visits: 2000
+    averageSeconds: 1070
+  - visits: 2500
+    averageSeconds: 1330

@@ -1,0 +1,69 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+    "rt": "https://api-evangelist.github.io/routific/json-ld/routific-context.jsonld#",
+
+    "Visit": "rt:Visit",
+    "Vehicle": "rt:Vehicle",
+    "Fleet": "rt:Fleet",
+    "Location": "schema:Place",
+    "Depot": "rt:Depot",
+    "Solution": "rt:Solution",
+    "RouteAssignment": "rt:RouteAssignment",
+    "Stop": "rt:Stop",
+    "PickupDeliveryVisit": "rt:PickupDeliveryVisit",
+    "OptimizationJob": "rt:OptimizationJob",
+
+    "location": "schema:location",
+    "name": "schema:name",
+    "lat": "geo:lat",
+    "lng": "geo:long",
+    "start": "rt:windowStart",
+    "end": "rt:windowEnd",
+    "duration": "rt:durationMinutes",
+    "load": "rt:load",
+    "priority": "schema:priority",
+    "type": "schema:additionalType",
+
+    "start_location": "rt:startDepot",
+    "end_location": "rt:endDepot",
+    "shift_start": "rt:shiftStart",
+    "shift_end": "rt:shiftEnd",
+    "capacity": "rt:capacity",
+    "min_visits": "rt:minVisits",
+
+    "pickup": "rt:pickup",
+    "dropoff": "rt:dropoff",
+
+    "visits": "rt:visits",
+    "fleet": "rt:fleet",
+    "options": "rt:options",
+    "solution": "rt:routeAssignments",
+    "unserved": "rt:unservedVisits",
+
+    "status": "schema:actionStatus",
+    "total_travel_time": "rt:totalTravelMinutes",
+    "total_idle_time": "rt:totalIdleMinutes",
+    "total_working_time": "rt:totalWorkingMinutes",
+    "total_overtime": "rt:totalOvertimeMinutes",
+    "total_visit_lateness": "rt:totalLatenessMinutes",
+    "num_late_visits": "rt:numLateVisits",
+    "num_unserved": "rt:numUnservedVisits",
+    "vehicle_overtime": "rt:vehicleOvertime",
+    "polylines": "rt:polylines",
+
+    "job_id": "schema:identifier",
+    "created_at": "schema:dateCreated",
+    "finished_at": "schema:dateModified",
+    "output": "schema:result",
+
+    "location_id": "rt:locationId",
+    "arrival_time": "rt:arrivalTime",
+    "finish_time": "rt:finishTime",
+    "too_late": "rt:tooLate",
+    "late_by": "rt:lateByMinutes",
+    "distance": "rt:distanceMeters"
+  }
+}

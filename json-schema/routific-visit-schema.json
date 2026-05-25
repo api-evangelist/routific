@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/routific/main/json-schema/routific-visit-schema.json",
+  "title": "Routific Visit",
+  "description": "A single visit submitted to the Routific Route Optimization API, including location, time-window, service duration, and optional load/priority/type constraints.",
+  "type": "object",
+  "required": ["location"],
+  "properties": {
+    "location": {
+      "type": "object",
+      "required": ["lat", "lng"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      }
+    },
+    "start": {
+      "type": "string",
+      "description": "Earliest start time (hh:mm or UNIX seconds)."
+    },
+    "end": {
+      "type": "string",
+      "description": "Latest start time (hh:mm or UNIX seconds)."
+    },
+    "duration": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Service duration in minutes."
+    },
+    "load": {
+      "oneOf": [
+        { "type": "number" },
+        { "type": "object", "additionalProperties": { "type": "number" } }
+      ]
+    },
+    "priority": { "type": "integer" },
+    "type": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "number" },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "number" }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

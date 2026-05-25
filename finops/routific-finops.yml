@@ -1,0 +1,49 @@
+finops: '1.0'
+info:
+  title: Routific FinOps Profile
+  description: FOCUS-aligned FinOps profile for Routific's commercial offering. Routific bills on a per-order volume tiered basis for the delivery management platform, with a free tier of 100 orders/month. The Route Optimization API uses custom volume-based pricing on a per-account basis.
+  provider: Routific
+  url: https://routific.com/pricing
+  modified: '2026-05-25'
+billingModel:
+  type: usage-based
+  granularity: order
+  units:
+  - unit: order
+    description: One stop/delivery scheduled through Routific.
+  - unit: request
+    description: One API call to the Route Optimization API (custom volume pricing).
+charges:
+- chargeCategory: usage
+  chargeClass: standard
+  serviceName: Routific Delivery Management
+  pricingUnit: order
+  description: Volume tiered per-order pricing. $150 flat for 101-1,000 orders/month; declining per-order rates from $0.15 down to $0.03 above 1,000 orders. Free for the first 100 orders/month.
+- chargeCategory: usage
+  chargeClass: addon
+  serviceName: SMS Notifications
+  pricingUnit: message
+  description: SMS notifications priced separately; rate varies by region.
+- chargeCategory: usage
+  chargeClass: standard
+  serviceName: Route Optimization API
+  pricingUnit: request
+  description: Custom volume pricing for the standalone Route Optimization API. Contact support@routific.com.
+- chargeCategory: usage
+  chargeClass: standard
+  serviceName: Enterprise / Custom
+  pricingUnit: order
+  description: Custom pricing for accounts above 50,000 orders/month or for channel partner integrations.
+costAllocation:
+  description: Costs are charged at the account level. Per-driver or per-dispatcher allocation is not metered — unlimited users included on all plans.
+  dimensions:
+  - account
+  - region
+billingFrequency: monthly
+currencies:
+- USD
+notes: |
+  Routific moved from per-vehicle to per-order pricing in mid-2024. Customers
+  evaluating budget impact should model expected monthly order volume against
+  the tiered table at https://routific.com/pricing. The Route Optimization API
+  is licensed separately under custom commercial terms.

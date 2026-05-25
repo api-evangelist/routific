@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/routific/main/json-schema/routific-vehicle-schema.json",
+  "title": "Routific Vehicle",
+  "description": "A vehicle/driver in the Routific fleet, including start/end depot, shift window, capacity, type constraints, and minimum visit count.",
+  "type": "object",
+  "required": ["start_location"],
+  "properties": {
+    "start_location": {
+      "type": "object",
+      "required": ["lat", "lng"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      }
+    },
+    "end_location": {
+      "type": "object",
+      "required": ["lat", "lng"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      }
+    },
+    "shift_start": { "type": "string" },
+    "shift_end": { "type": "string" },
+    "capacity": {
+      "oneOf": [
+        { "type": "number" },
+        { "type": "object", "additionalProperties": { "type": "number" } }
+      ]
+    },
+    "min_visits": { "type": "integer", "minimum": 0 },
+    "type": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "number" },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "number" }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

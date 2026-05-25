@@ -1,0 +1,57 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Routific Route Optimization API — VRP
+  description: 'Routific Route Optimization API — VRP. 3 operations covering synchronous solve, asynchronous solve, and insert-into-existing-solution. Self-contained Naftiko capability covering the Vehicle Routing Problem surface.'
+  tags:
+  - Routific
+  - VRP
+  - RouteOptimization
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    ROUTIFIC_TOKEN: ROUTIFIC_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: route-optimization-vrp
+    baseUri: https://api.routific.com
+    description: Routific VRP business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-vrp
+      path: /v1/vrp
+      operations:
+      - name: solvevrp
+        method: POST
+        description: Solve Vehicle Routing Problem synchronously
+        inputContentType: application/json
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-vrp-long
+      path: /v1/vrp-long
+      operations:
+      - name: solvevrplong
+        method: POST
+        description: Solve Vehicle Routing Problem asynchronously
+        inputContentType: application/json
+        outputRawFormat: json
+        outputParameters:
+        - name: job_id
+          type: string
+          value: $.job_id
+    - name: v1-fix
+      path: /v1/fix
+      operations:
+      - name: fixvrp
+        method: POST
+        description: Insert new visits into an existing VRP solution
+        inputContentType: application/json
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.

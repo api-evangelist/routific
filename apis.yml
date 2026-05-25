@@ -1,0 +1,188 @@
+aid: routific
+url: https://raw.githubusercontent.com/api-evangelist/routific/refs/heads/main/apis.yml
+apis:
+- aid: routific:routific-route-optimization-api
+  name: Routific Route Optimization API
+  tags:
+  - RouteOptimization
+  - VRP
+  - PickupAndDelivery
+  - Logistics
+  - Delivery
+  - FleetManagement
+  humanURL: https://docs.routific.com/reference/getting-started
+  baseURL: https://api.routific.com
+  properties:
+  - url: https://docs.routific.com/reference/getting-started
+    type: Documentation
+    name: Quickstart
+  - url: https://docs.routific.com/reference/options
+    type: Documentation
+    name: Options
+  - url: https://docs.routific.com/reference/re-optimize-solution
+    type: Documentation
+    name: Insert New Order Into Existing Routes
+  - url: https://docs.routific.com/reference/error-codes
+    type: Documentation
+    name: Error Codes
+  - url: https://docs.routific.com/llms.txt
+    type: LLMsTxt
+    name: docs.routific.com llms.txt
+  - url: openapi/routific-route-optimization-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/routific-visit-schema.json
+    type: JSONSchema
+  - url: json-schema/routific-vehicle-schema.json
+    type: JSONSchema
+  - url: json-schema/routific-solution-schema.json
+    type: JSONSchema
+  - url: json-schema/routific-job-schema.json
+    type: JSONSchema
+  - url: json-structure/routific-vrp-structure.json
+    type: JSONStructure
+  - url: json-ld/routific-context.jsonld
+    type: JSONLD
+  - url: examples/routific-solve-vrp-example.json
+    type: Example
+    name: Synchronous VRP Solve
+  - url: examples/routific-solve-vrp-long-example.json
+    type: Example
+    name: Asynchronous VRP Solve
+  - url: examples/routific-fix-vrp-example.json
+    type: Example
+    name: Insert Visit Into Existing Solution
+  - url: rules/routific-rules.yml
+    type: SpectralRules
+  - type: NaftikoCapability
+    url: capabilities/route-optimization-vrp.yaml
+  - type: NaftikoCapability
+    url: capabilities/route-optimization-pdp.yaml
+  - type: NaftikoCapability
+    url: capabilities/route-optimization-jobs.yaml
+  description: Routific's Route Optimization API solves the Vehicle Routing Problem (VRP) and Pickup-and-Delivery
+    Problem (PDP) for last-mile delivery fleets. It supports time-windows, capacity constraints, multi-depot
+    fleets, driver shifts, balanced routes, traffic simulation, polyline output, toll avoidance, and Google or
+    Here geocoding. Synchronous /v1/vrp handles small problems; asynchronous /v1/vrp-long and /v1/pdp-long
+    process up to 2,500 visits per call via a job_id polling pattern. /v1/fix and /v1/fix-pdp insert new
+    visits into existing solutions without re-solving.
+name: Routific
+tags:
+- RouteOptimization
+- VRP
+- PickupAndDelivery
+- Logistics
+- LastMileDelivery
+- Delivery
+- FleetManagement
+- Dispatch
+- DeliveryManagement
+kind: contract
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+common:
+- type: LinkedIn
+  url: https://www.linkedin.com/company/routific
+- type: Twitter
+  url: https://twitter.com/routific
+- url: https://github.com/routific
+  name: Routific On GitHub
+  type: GitHub
+- url: https://routific.com
+  name: Routific Home
+  type: Portal
+- url: https://dev.routific.com
+  name: Developer Portal
+  type: Developer
+- url: https://dev.routific.com/signup
+  name: Developer Signup
+  type: Signup
+- url: https://docs.routific.com
+  name: API Documentation
+  type: Documentation
+- url: https://docs.routific.com/reference/getting-started
+  name: Quickstart
+  type: Documentation
+- url: https://docs.routific.com/reference/error-codes
+  name: Error Codes
+  type: Errors
+- url: https://status.routific.com
+  name: Routific Status
+  type: StatusPage
+- url: https://help.routific.com
+  name: Help Center
+  type: Support
+- url: https://routific.com/blog
+  name: Routific Blog
+  type: Blog
+- url: https://routific.com/pricing
+  name: Routific Pricing
+  type: Pricing
+- url: https://academy.routific.com
+  name: Routific Academy
+  type: Documentation
+- url: mailto:support@routific.com
+  name: Support Email
+  type: Support
+- url: plans/routific-plans-pricing.yml
+  type: Plans
+- url: rate-limits/routific-rate-limits.yml
+  type: RateLimits
+- url: finops/routific-finops.yml
+  type: FinOps
+- url: vocabulary/routific-vocabulary.yml
+  type: Vocabulary
+sdks:
+- name: routific (Node.js)
+  url: https://github.com/routific/routific-node-client
+  type: SDK
+  language: JavaScript
+- name: routific (Ruby Gem)
+  url: https://github.com/routific/routific-gem
+  type: SDK
+  language: Ruby
+integrations:
+- name: Shopify
+  url: https://routific.com/integrations/shopify
+- name: WooCommerce
+  url: https://routific.com/integrations/woocommerce
+- name: Zapier
+  url: https://routific.com/integrations/zapier
+solutions:
+- name: Food And Beverage Delivery
+- name: Furniture Delivery
+- name: E-commerce Last Mile
+- name: Non-profit Logistics
+- name: Pharmacy Delivery
+- name: Flower Delivery
+useCases:
+- name: Same-day Pickup And Delivery
+- name: Next-day Pickup And Delivery
+- name: Multi-depot Fleet Routing
+- name: Last-minute Order Insertion
+- name: Channel Partner / Embedded Optimization
+features:
+- name: Time-window Constraints
+- name: Capacity Constraints
+- name: Driver Shifts
+- name: Vehicle/Visit Type Compatibility
+- name: Traffic Simulation
+- name: Route Balancing
+- name: Polyline Output
+- name: Avoid Tolls
+- name: Google Or Here Geocoding
+- name: Asynchronous Long-running Jobs Up To 2500 Visits
+created: '2026-05-25'
+modified: '2026-05-25'
+position: Producing
+description: Routific is a Vancouver-based delivery management and route optimization software provider. Its
+  platform combines smart route optimization, dispatch and live tracking, a driver mobile app, customer
+  delivery notifications with real-time tracking, and proof of delivery. The standalone Route Optimization
+  API exposes the same engine — solving Vehicle Routing Problems (VRP) and Pickup-and-Delivery Problems
+  (PDP) — to SaaS integrators and channel partners. Routific has optimized over 191 million deliveries for
+  more than 1,000 businesses since founding.
+maintainers:
+- FN: Kin Lane
+  email: info@apievangelist.com
+  X: apievangelist
+  url: https://apievangelist.com
+specificationVersion: '0.16'

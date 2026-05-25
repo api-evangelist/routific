@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/routific/main/json-schema/routific-solution-schema.json",
+  "title": "Routific Solution",
+  "description": "Optimized route solution returned by the Routific Route Optimization API, including per-vehicle stop assignments, totals, and any unserved visits.",
+  "type": "object",
+  "properties": {
+    "status": { "type": "string", "enum": ["success", "error"] },
+    "total_travel_time": { "type": "integer" },
+    "total_idle_time": { "type": "integer" },
+    "total_working_time": { "type": "integer" },
+    "total_visit_lateness": { "type": "integer" },
+    "num_late_visits": { "type": "integer" },
+    "total_overtime": { "type": "integer" },
+    "num_unserved": { "type": "integer" },
+    "vehicle_overtime": {
+      "type": "object",
+      "additionalProperties": { "type": "integer" }
+    },
+    "unserved": {
+      "oneOf": [
+        { "type": "array", "items": { "type": "string" } },
+        { "type": "object", "additionalProperties": { "type": "string" } }
+      ]
+    },
+    "solution": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "location_id": { "type": "string" },
+            "arrival_time": { "type": "string" },
+            "finish_time": { "type": "string" },
+            "type": { "type": "string", "enum": ["pickup", "dropoff"] },
+            "too_late": { "type": "boolean" },
+            "late_by": { "type": "integer" },
+            "distance": { "type": "number" }
+          }
+        }
+      }
+    },
+    "polylines": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

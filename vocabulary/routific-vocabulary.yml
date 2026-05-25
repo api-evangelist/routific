@@ -1,0 +1,88 @@
+vocabulary: 0.1
+info:
+  title: Routific Vocabulary
+  description: Operational, capability, and domain vocabulary for the Routific Route Optimization API.
+  provider: Routific
+  modified: '2026-05-25'
+domain:
+  industry:
+  - Logistics
+  - LastMileDelivery
+  - FleetManagement
+  - RouteOptimization
+  problems:
+  - VRP
+  - PickupAndDelivery
+  - TravelingSalesmanProblem
+operational:
+- term: Visit
+  definition: A single location to be serviced by a vehicle, with location, time-window, and service duration.
+- term: Fleet
+  definition: The set of all vehicles available to service visits.
+- term: Vehicle
+  definition: A single driver/vehicle with start and end depots, shift window, capacity, and compatibility types.
+- term: Depot
+  definition: A start_location or end_location for a vehicle.
+- term: Shift
+  definition: The driver's allowed working window, bounded by shift_start and shift_end.
+- term: TimeWindow
+  definition: The visit's start and end constraint within which it must be served.
+- term: Duration
+  definition: Service time in minutes at a visit's location.
+- term: Capacity
+  definition: A vehicle's load-carrying limit (scalar or per-dimension object).
+- term: Load
+  definition: The load contribution of a single visit (scalar or per-dimension object).
+- term: Solution
+  definition: An ordered assignment of visits to vehicles produced by the optimization engine.
+- term: Unserved
+  definition: Visits that could not be scheduled given the constraints.
+- term: Overtime
+  definition: Minutes a driver works beyond shift_end.
+- term: Lateness
+  definition: Minutes a stop is serviced past its time-window end.
+capabilities:
+- term: VRP
+  definition: Vehicle Routing Problem — assign and order visits across a fleet to minimize total travel time.
+- term: PDP
+  definition: Pickup-and-Delivery Problem — paired pickup/dropoff visits routed together.
+- term: AsynchronousSolve
+  definition: Submit a problem and poll a job for the result; used for large problems.
+- term: SolutionFix
+  definition: Insert one or more new visits into an existing optimized solution without re-solving.
+- term: Geocoding
+  definition: 'Convert address strings to lat/lng (provider selectable: google or here).'
+- term: TrafficSimulation
+  definition: Adjust driving speeds (faster/fast/normal/slow/very slow) to model real-world conditions.
+- term: PolylineOutput
+  definition: Encoded polyline per vehicle for rendering routes on a map.
+- term: AvoidTolls
+  definition: Compute routes that exclude toll roads.
+- term: RouteBalance
+  definition: Distribute visits/shift-time evenly across drivers.
+options:
+- traffic
+- min_visits_per_vehicle
+- balance
+- visit_balance_coefficient
+- min_vehicles
+- shortest_distance
+- squash_durations
+- max_vehicle_overtime
+- max_visit_lateness
+- polylines
+- avoid_tolls
+- geocoder
+errors:
+- ERR_DRIVER_NOT_SAME_REGION
+- ERR_ALL_VISITS_INCOMPATIBLE
+- ERR_BREAKS_NOT_SUPPORTED_PDP
+- ERR_UNABLE_TO_SQUEEZE_STOPS
+- ERR_BAD_TRAFFIC_OPTIONS
+- ERR_VRP_TIMEOUT
+- ERR_PDP_TIMEOUT
+- ERR_LT_ZERO_SQUASH_DURATION
+- ERR_REACHED_STOP_LIMIT
+- ERR_REACHED_DAILY_QUOTA
+- ERR_JOB_NOT_FOUND
+- ERR_UNSUPPORTED_VERSION

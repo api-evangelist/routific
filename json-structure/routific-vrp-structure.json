@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-structure.org/draft/2025/schema",
+  "title": "Routific VRP Structure",
+  "description": "JSON Structure documenting the Routific Vehicle Routing Problem request body and the typed shapes nested inside it.",
+  "type": "object",
+  "properties": {
+    "visits": {
+      "type": "map",
+      "description": "Map of visit_id to Visit.",
+      "values": { "$ref": "#/definitions/Visit" }
+    },
+    "fleet": {
+      "type": "map",
+      "description": "Map of vehicle_id to Vehicle.",
+      "values": { "$ref": "#/definitions/Vehicle" }
+    },
+    "options": {
+      "$ref": "#/definitions/Options"
+    }
+  },
+  "definitions": {
+    "Location": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      }
+    },
+    "Visit": {
+      "type": "object",
+      "properties": {
+        "location": { "$ref": "#/definitions/Location" },
+        "start": { "type": "string" },
+        "end": { "type": "string" },
+        "duration": { "type": "integer" },
+        "load": { "type": ["number", "object"] },
+        "priority": { "type": "integer" },
+        "type": { "type": ["string", "number", "array"] }
+      }
+    },
+    "Vehicle": {
+      "type": "object",
+      "properties": {
+        "start_location": { "$ref": "#/definitions/Location" },
+        "end_location": { "$ref": "#/definitions/Location" },
+        "shift_start": { "type": "string" },
+        "shift_end": { "type": "string" },
+        "capacity": { "type": ["number", "object"] },
+        "min_visits": { "type": "integer" },
+        "type": { "type": ["string", "number", "array"] }
+      }
+    },
+    "Options": {
+      "type": "object",
+      "properties": {
+        "traffic": { "type": "string" },
+        "min_visits_per_vehicle": { "type": "integer" },
+        "balance": { "type": "boolean" },
+        "visit_balance_coefficient": { "type": "number" },
+        "min_vehicles": { "type": "boolean" },
+        "shortest_distance": { "type": "boolean" },
+        "squash_durations": { "type": "integer" },
+        "max_vehicle_overtime": { "type": "integer" },
+        "max_visit_lateness": { "type": "integer" },
+        "polylines": { "type": "boolean" },
+        "avoid_tolls": { "type": "boolean" },
+        "geocoder": { "type": "string" }
+      }
+    }
+  }
+}

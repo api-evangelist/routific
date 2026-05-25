@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/routific/main/json-schema/routific-job-schema.json",
+  "title": "Routific Optimization Job",
+  "description": "Asynchronous optimization job state returned by GET /jobs/{job_id} after submitting to /v1/vrp-long or /v1/pdp-long.",
+  "type": "object",
+  "required": ["status"],
+  "properties": {
+    "job_id": { "type": "string" },
+    "status": { "type": "string", "enum": ["pending", "processing", "finished", "error"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "finished_at": { "type": "string", "format": "date-time" },
+    "output": {
+      "oneOf": [
+        { "type": "object" },
+        { "type": "string" }
+      ]
+    }
+  }
+}

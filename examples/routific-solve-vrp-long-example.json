@@ -1,0 +1,56 @@
+{
+  "submit": {
+    "request": {
+      "method": "POST",
+      "url": "https://api.routific.com/v1/vrp-long",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "bearer <YOUR_TOKEN>"
+      },
+      "body": {
+        "visits": {
+          "order_1": {
+            "location": { "name": "6800 Cambie", "lat": 49.227107, "lng": -123.1163085 },
+            "start": "9:00", "end": "12:00", "duration": 10
+          }
+        },
+        "fleet": {
+          "vehicle_1": {
+            "start_location": { "id": "depot", "lat": 49.2553636, "lng": -123.0873365 },
+            "shift_start": "8:00", "shift_end": "17:00"
+          }
+        }
+      }
+    },
+    "response": {
+      "status": 202,
+      "body": { "job_id": "5f4a1b2c3d4e5f6a7b8c9d0e" }
+    }
+  },
+  "poll": {
+    "request": {
+      "method": "GET",
+      "url": "https://api.routific.com/jobs/5f4a1b2c3d4e5f6a7b8c9d0e",
+      "headers": { "Authorization": "bearer <YOUR_TOKEN>" }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "job_id": "5f4a1b2c3d4e5f6a7b8c9d0e",
+        "status": "finished",
+        "output": {
+          "status": "success",
+          "total_travel_time": 12,
+          "num_unserved": 0,
+          "unserved": [],
+          "solution": {
+            "vehicle_1": [
+              { "location_id": "depot", "arrival_time": "8:00", "finish_time": "8:00" },
+              { "location_id": "order_1", "arrival_time": "9:00", "finish_time": "9:10" }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

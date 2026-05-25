@@ -1,0 +1,43 @@
+extends:
+  - spectral:oas
+rules:
+  # Routific convention: every operation must have a description.
+  operation-description: error
+  # Operation summaries must use Title Case (project-wide convention).
+  operation-summary: error
+  # Routific uses snake_case for all field names in request/response bodies.
+  routific-snake-case-properties:
+    description: All schema property names must use snake_case (Routific convention).
+    severity: warn
+    given: "$.components.schemas.*.properties.*~"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-z0-9_]*$"
+  # Routific tokens are JWTs sent as bearer auth.
+  routific-security-bearer:
+    description: Security must use bearer auth (Routific JWT tokens).
+    severity: error
+    given: "$.components.securitySchemes.*"
+    then:
+      field: scheme
+      function: pattern
+      functionOptions:
+        match: "^bearer$"
+  # Production base URL must be api.routific.com.
+  routific-server-url:
+    description: Production server URL must be https://api.routific.com.
+    severity: warn
+    given: "$.servers[0].url"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://api\\.routific\\.com"
+  # Every long-running endpoint should return 202 with a job_id.
+  routific-async-202:
+    description: Endpoints whose path ends in '-long' must return a 202 response.
+    severity: warn
+    given: "$.paths[?(@property =~ /-long$/)].post.responses"
+    then:
+      field: "202"
+      function: truthy
