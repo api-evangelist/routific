@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Routific Route Optimization API",
+    "version": "1.11"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "VRP",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Solve Vehicle Routing Problem",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/vrp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Synchronously solve a vehicle routing problem. Send the addresses of\nyour visits and your fleet; the API returns the optimal allocation and\nthe order in which each vehicle should visit them. Use for small problems\n(< 60 visits). Larger problems should use `/v1/vrp-long`.\n"
+        },
+        {
+          "info": {
+            "name": "Solve Vehicle Routing Problem (Async)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/vrp-long",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a vehicle routing problem for asynchronous processing. Returns\na `job_id` immediately; poll `GET /jobs/{job_id}` for status and result.\nHard limit of 2,500 visits per call.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "PDP",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Solve Pickup And Delivery Problem (Async)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/pdp-long",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a pickup-and-delivery routing problem for asynchronous processing.\nEach visit pairs a pickup and a dropoff location with their own\ntime-windows and durations. Returns a `job_id` immediately.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Optimization Job Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.routific.com/jobs/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier returned by `/v1/vrp-long` or `/v1/pdp-long`."
+              }
+            ]
+          },
+          "docs": "Retrieve the status and result of an asynchronous routing job submitted\nvia `/v1/vrp-long` or `/v1/pdp-long`. Statuses are `pending`,\n`processing`, `finished`, or `error`. When `finished`, the response\npayload is in `output`.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Fix",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Insert New Visits Into VRP Solution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/fix",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Insert one or more new visits into an existing optimized VRP solution\nwithout re-solving the entire problem. Pass the current `solution`,\nthe remaining `visits`, and the new visit IDs in `unserved`.\n"
+        },
+        {
+          "info": {
+            "name": "Insert New Visits Into PDP Solution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/fix-pdp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Insert one or more new pickup-and-delivery visits into an existing\noptimized PDP solution without re-solving the entire problem.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

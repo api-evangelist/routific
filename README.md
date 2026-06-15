@@ -2,13 +2,24 @@
 
 Routific is a Vancouver-based delivery management and route optimization software provider. Its platform combines smart route optimization, dispatch and live tracking, a driver mobile app, customer delivery notifications with real-time tracking, and proof of delivery. The standalone Route Optimization API exposes the same engine — solving Vehicle Routing Problems (VRP) and Pickup-and-Delivery Problems (PDP) — to SaaS integrators and channel partners. Routific has optimized over 191 million deliveries for more than 1,000 businesses since founding.
 
-**URL:** [Visit APIs.json](https://raw.githubusercontent.com/api-evangelist/routific/refs/heads/main/apis.yml)
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/routific/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/routific/refs/heads/main/apis.yml)
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## Scope
+
+- **Position:** Producing
+- **Access:** 3rd-Party
 
 ## Tags
 
-- RouteOptimization, VRP, PickupAndDelivery, Logistics, LastMileDelivery, Delivery, FleetManagement, Dispatch, DeliveryManagement
+- RouteOptimization
+- VRP
+- PickupAndDelivery
+- Logistics
+- LastMileDelivery
+- Delivery
+- FleetManagement
+- Dispatch
+- DeliveryManagement
 
 ## Timestamps
 
@@ -19,112 +30,65 @@ Routific is a Vancouver-based delivery management and route optimization softwar
 
 ### Routific Route Optimization API
 
-Solves the Vehicle Routing Problem (VRP) and Pickup-and-Delivery Problem (PDP) for last-mile delivery fleets. Supports time-windows, capacity constraints, multi-depot fleets, driver shifts, balanced routes, traffic simulation, polyline output, toll avoidance, and Google or Here geocoding. Synchronous `/v1/vrp` handles small problems; asynchronous `/v1/vrp-long` and `/v1/pdp-long` process up to 2,500 visits per call via a `job_id` polling pattern. `/v1/fix` and `/v1/fix-pdp` insert new visits into existing solutions without re-solving.
+Routific's Route Optimization API solves the Vehicle Routing Problem (VRP) and Pickup-and-Delivery Problem (PDP) for last-mile delivery fleets. It supports time-windows, capacity constraints, multi-depot fleets, driver shifts, balanced routes, traffic simulation, polyline output, toll avoidance, and Google or Here geocoding. Synchronous /v1/vrp handles small problems; asynchronous /v1/vrp-long and /v1/pdp-long process up to 2,500 visits per call via a job_id polling pattern. /v1/fix and /v1/fix-pdp insert new visits into existing solutions without re-solving.
 
-**Base URL:** `https://api.routific.com`
+- **Human URL:** [https://docs.routific.com/reference/getting-started](https://docs.routific.com/reference/getting-started)
+- **Base URL:** `https://api.routific.com`
 
-**Authentication:** Bearer JWT — `Authorization: bearer <token>`
+#### Tags
 
-**Human URL:** [https://docs.routific.com/reference/getting-started](https://docs.routific.com/reference/getting-started)
+- RouteOptimization
+- VRP
+- PickupAndDelivery
+- Logistics
+- Delivery
+- FleetManagement
 
-#### Operations
+#### Properties
 
-| Method | Path | Operation |
-|---|---|---|
-| POST | `/v1/vrp` | Solve Vehicle Routing Problem (sync) |
-| POST | `/v1/vrp-long` | Solve Vehicle Routing Problem (async; returns `job_id`) |
-| POST | `/v1/pdp-long` | Solve Pickup-and-Delivery Problem (async) |
-| GET  | `/jobs/{job_id}` | Get optimization job status / result |
-| POST | `/v1/fix` | Insert new visits into existing VRP solution |
-| POST | `/v1/fix-pdp` | Insert new visits into existing PDP solution |
+- [Documentation](https://docs.routific.com/reference/getting-started)
+- [Documentation](https://docs.routific.com/reference/options)
+- [Documentation](https://docs.routific.com/reference/re-optimize-solution)
+- [Documentation](https://docs.routific.com/reference/error-codes)
+- [L L Ms Txt](https://docs.routific.com/llms.txt)
+- [OpenAPI](openapi/routific-route-optimization-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/routific-route-optimization-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/routific-route-optimization-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [JSON Schema](json-schema/routific-visit-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/routific-vehicle-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/routific-solution-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/routific-job-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Structure](json-structure/routific-vrp-structure.json)
+- [JSON-LD](json-ld/routific-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+- [Example](examples/routific-solve-vrp-example.json)
+- [Example](examples/routific-solve-vrp-long-example.json)
+- [Example](examples/routific-fix-vrp-example.json)
+- [Spectral Rules](rules/routific-rules.yml)
 
-#### Artifacts
+## Common Properties
 
-- [OpenAPI](openapi/routific-route-optimization-api-openapi.yml)
-- [JSON Schema — Visit](json-schema/routific-visit-schema.json)
-- [JSON Schema — Vehicle](json-schema/routific-vehicle-schema.json)
-- [JSON Schema — Solution](json-schema/routific-solution-schema.json)
-- [JSON Schema — Job](json-schema/routific-job-schema.json)
-- [JSON Structure — VRP Request](json-structure/routific-vrp-structure.json)
-- [JSON-LD Context](json-ld/routific-context.jsonld)
-- [Example — Synchronous VRP Solve](examples/routific-solve-vrp-example.json)
-- [Example — Asynchronous VRP Solve](examples/routific-solve-vrp-long-example.json)
-- [Example — Insert Visit Into Existing Solution](examples/routific-fix-vrp-example.json)
-- [Spectral Ruleset](rules/routific-rules.yml)
-- [Naftiko Capability — VRP](capabilities/route-optimization-vrp.yaml)
-- [Naftiko Capability — PDP](capabilities/route-optimization-pdp.yaml)
-- [Naftiko Capability — Jobs](capabilities/route-optimization-jobs.yaml)
-
-#### Engine Options
-
-`traffic`, `min_visits_per_vehicle`, `balance`, `visit_balance_coefficient`, `min_vehicles`, `shortest_distance`, `squash_durations`, `max_vehicle_overtime`, `max_visit_lateness`, `polylines`, `avoid_tolls`, `geocoder` (`google` or `here`).
-
-#### Async Processing Times (`/vrp-long`)
-
-| Visits | Average Time |
-|---|---|
-| < 100 | < 2s |
-| 200 | 8s |
-| 300 | 20s |
-| 400 | 30s |
-| 500 | 90s |
-| 1,000 | ~4 min |
-| 1,500 | ~8 min |
-| 2,000 | ~18 min |
-| 2,500 | ~22 min |
-
-Hard limit: 2,500 visits per optimization call.
-
-## SDKs
-
-| Name | Language | Repo |
-|---|---|---|
-| routific | JavaScript / Node.js | [routific/routific-node-client](https://github.com/routific/routific-node-client) |
-| routific | Ruby | [routific/routific-gem](https://github.com/routific/routific-gem) |
-
-## Integrations
-
-- Shopify
-- WooCommerce
-- Zapier
-
-## Plans And Pricing
-
-The Routific platform uses a per-order, volume-tiered pricing model (migrated from per-vehicle in mid-2024):
-
-| Tier | Volume | Price |
-|---|---|---|
-| Free | Up to 100 orders/month | $0 |
-| Paid (Flat) | 101–1,000 orders/month | $150 flat |
-| Paid (Tiered) | 1,001–2,000 | $0.15 per additional order |
-| Paid (Tiered) | 2,001–3,000 | $0.13 per additional order |
-| Paid (Tiered) | 3,001–5,000 | $0.10 per additional order |
-| Paid (Tiered) | 5,001–10,000 | $0.08 per additional order |
-| Paid (Tiered) | 10,001–20,000 | $0.05 per additional order |
-| Paid (Tiered) | 20,001–50,000 | $0.03 per additional order |
-| Enterprise | 50,000+ | Contact sales |
-
-The standalone Route Optimization API is licensed under custom volume terms — contact [support@routific.com](mailto:support@routific.com).
-
-See [plans/routific-plans-pricing.yml](plans/routific-plans-pricing.yml), [rate-limits/routific-rate-limits.yml](rate-limits/routific-rate-limits.yml), and [finops/routific-finops.yml](finops/routific-finops.yml).
-
-## Common
-
-- [Portal](https://routific.com)
-- [Developer Portal](https://dev.routific.com)
-- [Developer Signup](https://dev.routific.com/signup)
-- [API Documentation](https://docs.routific.com)
-- [Quickstart](https://docs.routific.com/reference/getting-started)
-- [Error Codes](https://docs.routific.com/reference/error-codes)
-- [Routific Status](https://status.routific.com)
-- [Help Center](https://help.routific.com)
-- [Blog](https://routific.com/blog)
-- [Pricing](https://routific.com/pricing)
-- [GitHub Org](https://github.com/routific)
 - [LinkedIn](https://www.linkedin.com/company/routific)
 - [Twitter](https://twitter.com/routific)
-- [Support Email](mailto:support@routific.com)
+- [Git Hub](https://github.com/routific)
+- [Portal](https://routific.com)
+- [Developer](https://dev.routific.com)
+- [Signup](https://dev.routific.com/signup)
+- [Documentation](https://docs.routific.com)
+- [Documentation](https://docs.routific.com/reference/getting-started)
+- [Errors](https://docs.routific.com/reference/error-codes)
+- [Status Page](https://status.routific.com)
+- [Support](https://help.routific.com)
+- [Blog](https://routific.com/blog)
+- [Pricing](https://routific.com/pricing)
+- [Documentation](https://academy.routific.com)
+- [Support](mailto:support@routific.com)
+- [Plans](plans/routific-plans-pricing.yml)
+- [Rate Limits](rate-limits/routific-rate-limits.yml)
+- [Fin Ops](finops/routific-finops.yml)
+- [Vocabulary](vocabulary/routific-vocabulary.yml)
 
-## Maintainer
+## Maintainers
 
-- Kin Lane — [info@apievangelist.com](mailto:info@apievangelist.com) — [apievangelist.com](https://apievangelist.com)
+**FN:** Kin Lane
+**Email:** info@apievangelist.com
+**URL:** https://apievangelist.com
