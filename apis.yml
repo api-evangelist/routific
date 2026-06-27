@@ -26,7 +26,7 @@ apis:
         type: Documentation
         name: Error Codes
       - url: https://docs.routific.com/llms.txt
-        type: LLMsTxt
+        type: LlmsText
         name: docs.routific.com llms.txt
       - url: openapi/routific-route-optimization-api-openapi.yml
         type: OpenAPI
@@ -43,13 +43,13 @@ apis:
       - url: json-ld/routific-context.jsonld
         type: JSONLD
       - url: examples/routific-solve-vrp-example.json
-        type: Example
+        type: Examples
         name: Synchronous VRP Solve
       - url: examples/routific-solve-vrp-long-example.json
-        type: Example
+        type: Examples
         name: Asynchronous VRP Solve
       - url: examples/routific-fix-vrp-example.json
-        type: Example
+        type: Examples
         name: Insert Visit Into Existing Solution
       - url: rules/routific-rules.yml
         type: SpectralRules
@@ -98,7 +98,7 @@ common:
     type: Documentation
   - url: https://docs.routific.com/reference/error-codes
     name: Error Codes
-    type: Errors
+    type: ErrorCodes
   - url: https://status.routific.com
     name: Routific Status
     type: StatusPage
@@ -128,11 +128,11 @@ common:
 sdks:
   - name: routific (Node.js)
     url: https://github.com/routific/routific-node-client
-    type: SDK
+    type: SDKs
     language: JavaScript
   - name: routific (Ruby Gem)
     url: https://github.com/routific/routific-gem
-    type: SDK
+    type: SDKs
     language: Ruby
 integrations:
   - name: Shopify
