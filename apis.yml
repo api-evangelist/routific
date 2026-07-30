@@ -1,64 +1,166 @@
 aid: routific
 url: https://raw.githubusercontent.com/api-evangelist/routific/refs/heads/main/apis.yml
 apis:
-  - aid: routific:routific-route-optimization-api
-    name: Routific Route Optimization API
-    tags:
-      - RouteOptimization
-      - VRP
-      - PickupAndDelivery
-      - Logistics
-      - Delivery
-      - FleetManagement
-    humanURL: https://docs.routific.com/reference/getting-started
-    baseURL: https://api.routific.com
-    properties:
-      - url: https://docs.routific.com/reference/getting-started
-        type: Documentation
-        name: Quickstart
-      - url: https://docs.routific.com/reference/options
-        type: Documentation
-        name: Options
-      - url: https://docs.routific.com/reference/re-optimize-solution
-        type: Documentation
-        name: Insert New Order Into Existing Routes
-      - url: https://docs.routific.com/reference/error-codes
-        type: Documentation
-        name: Error Codes
-      - url: https://docs.routific.com/llms.txt
-        type: LlmsText
-        name: docs.routific.com llms.txt
-      - url: openapi/routific-route-optimization-api-openapi.yml
-        type: OpenAPI
-      - url: json-schema/routific-visit-schema.json
-        type: JSONSchema
-      - url: json-schema/routific-vehicle-schema.json
-        type: JSONSchema
-      - url: json-schema/routific-solution-schema.json
-        type: JSONSchema
-      - url: json-schema/routific-job-schema.json
-        type: JSONSchema
-      - url: json-structure/routific-vrp-structure.json
-        type: JSONStructure
-      - url: json-ld/routific-context.jsonld
-        type: JSONLD
-      - url: examples/routific-solve-vrp-example.json
-        type: Examples
-        name: Synchronous VRP Solve
-      - url: examples/routific-solve-vrp-long-example.json
-        type: Examples
-        name: Asynchronous VRP Solve
-      - url: examples/routific-fix-vrp-example.json
-        type: Examples
-        name: Insert Visit Into Existing Solution
-      - url: rules/routific-rules.yml
-        type: SpectralRules
-    description: >-
-      Routific's Route Optimization API solves the Vehicle Routing Problem (VRP) and Pickup-and-Delivery Problem (PDP)
-      for last-mile delivery fleets. It supports time-windows, capacity constraints, multi-depot fleets, driver shifts,
-      balanced routes, traffic simulation, polyline output, toll avoidance, and Google or Here geocoding. Synchronous
-      /v1/vrp handles small problems; asynchronous /v1/vrp-long and /v1/pdp-long process up to 2,500 visits per call via
-      a job_id polling pattern. /v1/fix and /v1/fix-pdp insert new visits into existing solutions without re-solving.
+- aid: routific:routific-fix-api
+  name: Routific Fix API
+  description: Insert new visits into an existing optimized solution.
+  humanURL: https://docs.routific.com/reference/getting-started
+  baseURL: https://api.routific.com
+  tags:
+  - Fix
+  properties:
+  - type: OpenAPI
+    url: openapi/routific-fix-api-openapi.yml
+  - type: Documentation
+    url: https://docs.routific.com/reference/getting-started
+  - type: Documentation
+    url: https://docs.routific.com/reference/options
+  - type: Documentation
+    url: https://docs.routific.com/reference/re-optimize-solution
+  - type: Documentation
+    url: https://docs.routific.com/reference/error-codes
+  - type: LlmsText
+    url: https://docs.routific.com/llms.txt
+  - type: JSONSchema
+    url: json-schema/routific-visit-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-vehicle-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-solution-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-job-schema.json
+  - type: JSONStructure
+    url: json-structure/routific-vrp-structure.json
+  - type: JSONLD
+    url: json-ld/routific-context.jsonld
+  - type: Examples
+    url: examples/routific-solve-vrp-example.json
+  - type: Examples
+    url: examples/routific-solve-vrp-long-example.json
+  - type: Examples
+    url: examples/routific-fix-vrp-example.json
+  - type: SpectralRules
+    url: rules/routific-rules.yml
+- aid: routific:routific-jobs-api
+  name: Routific Jobs API
+  description: Asynchronous long-running optimization jobs.
+  humanURL: https://docs.routific.com/reference/getting-started
+  baseURL: https://api.routific.com
+  tags:
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/routific-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.routific.com/reference/getting-started
+  - type: Documentation
+    url: https://docs.routific.com/reference/options
+  - type: Documentation
+    url: https://docs.routific.com/reference/re-optimize-solution
+  - type: Documentation
+    url: https://docs.routific.com/reference/error-codes
+  - type: LlmsText
+    url: https://docs.routific.com/llms.txt
+  - type: JSONSchema
+    url: json-schema/routific-visit-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-vehicle-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-solution-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-job-schema.json
+  - type: JSONStructure
+    url: json-structure/routific-vrp-structure.json
+  - type: JSONLD
+    url: json-ld/routific-context.jsonld
+  - type: Examples
+    url: examples/routific-solve-vrp-example.json
+  - type: Examples
+    url: examples/routific-solve-vrp-long-example.json
+  - type: Examples
+    url: examples/routific-fix-vrp-example.json
+  - type: SpectralRules
+    url: rules/routific-rules.yml
+- aid: routific:routific-pdp-api
+  name: Routific PDP API
+  description: Pickup and Delivery Problem — paired pickup/dropoff routing.
+  humanURL: https://docs.routific.com/reference/getting-started
+  baseURL: https://api.routific.com
+  tags:
+  - PDP
+  properties:
+  - type: OpenAPI
+    url: openapi/routific-pdp-api-openapi.yml
+  - type: Documentation
+    url: https://docs.routific.com/reference/getting-started
+  - type: Documentation
+    url: https://docs.routific.com/reference/options
+  - type: Documentation
+    url: https://docs.routific.com/reference/re-optimize-solution
+  - type: Documentation
+    url: https://docs.routific.com/reference/error-codes
+  - type: LlmsText
+    url: https://docs.routific.com/llms.txt
+  - type: JSONSchema
+    url: json-schema/routific-visit-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-vehicle-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-solution-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-job-schema.json
+  - type: JSONStructure
+    url: json-structure/routific-vrp-structure.json
+  - type: JSONLD
+    url: json-ld/routific-context.jsonld
+  - type: Examples
+    url: examples/routific-solve-vrp-example.json
+  - type: Examples
+    url: examples/routific-solve-vrp-long-example.json
+  - type: Examples
+    url: examples/routific-fix-vrp-example.json
+  - type: SpectralRules
+    url: rules/routific-rules.yml
+- aid: routific:routific-vrp-api
+  name: Routific VRP API
+  description: Vehicle Routing Problem — assign and order visits across a fleet.
+  humanURL: https://docs.routific.com/reference/getting-started
+  baseURL: https://api.routific.com
+  tags:
+  - VRP
+  properties:
+  - type: OpenAPI
+    url: openapi/routific-vrp-api-openapi.yml
+  - type: Documentation
+    url: https://docs.routific.com/reference/getting-started
+  - type: Documentation
+    url: https://docs.routific.com/reference/options
+  - type: Documentation
+    url: https://docs.routific.com/reference/re-optimize-solution
+  - type: Documentation
+    url: https://docs.routific.com/reference/error-codes
+  - type: LlmsText
+    url: https://docs.routific.com/llms.txt
+  - type: JSONSchema
+    url: json-schema/routific-visit-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-vehicle-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-solution-schema.json
+  - type: JSONSchema
+    url: json-schema/routific-job-schema.json
+  - type: JSONStructure
+    url: json-structure/routific-vrp-structure.json
+  - type: JSONLD
+    url: json-ld/routific-context.jsonld
+  - type: Examples
+    url: examples/routific-solve-vrp-example.json
+  - type: Examples
+    url: examples/routific-solve-vrp-long-example.json
+  - type: Examples
+    url: examples/routific-fix-vrp-example.json
+  - type: SpectralRules
+    url: rules/routific-rules.yml
 name: Routific
 tags:
   - RouteOptimization
@@ -71,9 +173,24 @@ tags:
   - Dispatch
   - DeliveryManagement
 kind: contract
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/routific.png
 access: 3rd-Party
 common:
+  - type: PostmanWorkspace
+    url: https://www.postman.com/kinlaneapi/routific/overview
   - type: AgenticAccess
     url: agentic-access/routific-agentic-access.yml
   - type: DomainSecurity
