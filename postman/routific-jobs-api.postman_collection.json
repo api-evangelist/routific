@@ -1,0 +1,807 @@
+{
+  "info": {
+    "_postman_id": "81e018d0-04a6-4865-862b-082a645b37f7",
+    "name": "Routific Route Optimization Fix Jobs API",
+    "description": "Routific's Route Optimization API solves the vehicle routing problem (VRP)\nand the pickup-and-delivery problem (PDP) for last-mile delivery fleets.\nIt supports time-windows, capacity constraints, driver shifts, multi-depot\nfleets, balanced routes, traffic simulation, and polyline output.\n\nThe API offers four solving surfaces:\n\n- `POST /v1/vrp` \u2014 synchronous vehicle routing for small problems (< 60 visits).\n- `POST /v1/vrp-long` \u2014 asynchronous vehicle routing for problems up to 2,500 visits.\n- `POST /v1/pdp-long` \u2014 asynchronous pickup-and-delivery routing.\n- `POST /v1/fix` and `POST /v1/fix-pdp` \u2014 insert new visits into an\n  existing optimized solution without re-solving the whole problem.\n\nAsynchronous endpoints return a `job_id` immediately; clients poll\n`GET /jobs/{job_id}` until the job reaches `finished` or `error`.\n\n\nContact Support:\n Name: Routific Support\n Email: support@routific.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:49:04.000Z",
+    "updatedAt": "2026-07-28T02:49:04.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-81e018d0-04a6-4865-862b-082a645b37f7"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "vrp-long",
+          "item": [
+            {
+              "name": "Solve Vehicle Routing Problem (Async)",
+              "id": "da0e7042-9df1-46a6-af53-a92e86961bf9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"visits\": {\n    \"consequatbd4\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"est_b0\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"fleet\": {\n    \"esse_5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"elit9f3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"dolore1d3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/vrp-long",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "vrp-long"
+                  ]
+                },
+                "description": "Submit a vehicle routing problem for asynchronous processing. Returns\na `job_id` immediately; poll `GET /jobs/{job_id}` for status and result.\nHard limit of 2,500 visits per call.\n"
+              },
+              "response": [
+                {
+                  "id": "0d65d690-95cd-4911-b318-8373ed27e250",
+                  "name": "Job accepted for asynchronous processing",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"visits\": {\n    \"consequatbd4\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"est_b0\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"fleet\": {\n    \"esse_5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"elit9f3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"dolore1d3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/vrp-long",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "vrp-long"
+                      ]
+                    }
+                  },
+                  "status": "Accepted",
+                  "code": 202,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"job_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-0d65d690-95cd-4911-b318-8373ed27e250"
+                },
+                {
+                  "id": "4912762c-6bd4-4613-8f83-fa716e0461fb",
+                  "name": "Input error \u2014 see the error message and code for details.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"visits\": {\n    \"consequatbd4\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"est_b0\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"fleet\": {\n    \"esse_5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"elit9f3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"dolore1d3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/vrp-long",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "vrp-long"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-4912762c-6bd4-4613-8f83-fa716e0461fb"
+                },
+                {
+                  "id": "7e95d796-9eee-4e35-9f32-ccf113a35fa1",
+                  "name": "Missing or invalid bearer token.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"visits\": {\n    \"consequatbd4\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"est_b0\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"fleet\": {\n    \"esse_5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"elit9f3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"dolore1d3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/vrp-long",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "vrp-long"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-7e95d796-9eee-4e35-9f32-ccf113a35fa1"
+                },
+                {
+                  "id": "3230dfec-fb6b-4b03-a39f-6ac9441671b6",
+                  "name": "Daily request limit exceeded or problem size larger than account limits.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"visits\": {\n    \"consequatbd4\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"est_b0\": {\n      \"location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"start\": \"<string>\",\n      \"end\": \"<string>\",\n      \"duration\": \"<integer>\",\n      \"load\": \"<number>\",\n      \"priority\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"fleet\": {\n    \"esse_5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"elit9f3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"dolore1d3\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/vrp-long",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "vrp-long"
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-3230dfec-fb6b-4b03-a39f-6ac9441671b6"
+                }
+              ],
+              "createdAt": "2026-07-28T02:49:04.000Z",
+              "updatedAt": "2026-07-28T02:49:04.000Z",
+              "uid": "35240-da0e7042-9df1-46a6-af53-a92e86961bf9"
+            }
+          ],
+          "id": "f79d1b1d-b1f5-48a1-a5e1-a6f5a4a4b8ce",
+          "createdAt": "2026-07-28T02:49:04.000Z",
+          "updatedAt": "2026-07-28T02:49:04.000Z",
+          "uid": "35240-f79d1b1d-b1f5-48a1-a5e1-a6f5a4a4b8ce"
+        },
+        {
+          "name": "pdp-long",
+          "item": [
+            {
+              "name": "Solve Pickup And Delivery Problem (Async)",
+              "id": "2c9dee93-6311-465c-8f3d-b714259adc1a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"visits\": {\n    \"Ut_0\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    },\n    \"reprehenderit6\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    }\n  },\n  \"fleet\": {\n    \"deserunt_7\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"qui5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"esse77d\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/pdp-long",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "pdp-long"
+                  ]
+                },
+                "description": "Submit a pickup-and-delivery routing problem for asynchronous processing.\nEach visit pairs a pickup and a dropoff location with their own\ntime-windows and durations. Returns a `job_id` immediately.\n"
+              },
+              "response": [
+                {
+                  "id": "f4c4534a-5f4c-4ba2-8548-1afe51f874ac",
+                  "name": "Job accepted for asynchronous processing",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"visits\": {\n    \"Ut_0\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    },\n    \"reprehenderit6\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    }\n  },\n  \"fleet\": {\n    \"deserunt_7\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"qui5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"esse77d\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/pdp-long",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "pdp-long"
+                      ]
+                    }
+                  },
+                  "status": "Accepted",
+                  "code": 202,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"job_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-f4c4534a-5f4c-4ba2-8548-1afe51f874ac"
+                },
+                {
+                  "id": "4bd8cf0b-909d-4e05-8c5b-5e54e9db1882",
+                  "name": "Input error \u2014 see the error message and code for details.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"visits\": {\n    \"Ut_0\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    },\n    \"reprehenderit6\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    }\n  },\n  \"fleet\": {\n    \"deserunt_7\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"qui5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"esse77d\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/pdp-long",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "pdp-long"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-4bd8cf0b-909d-4e05-8c5b-5e54e9db1882"
+                },
+                {
+                  "id": "f2f92a2d-3452-47e0-ba8b-6ffda3da44ba",
+                  "name": "Missing or invalid bearer token.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"visits\": {\n    \"Ut_0\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    },\n    \"reprehenderit6\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    }\n  },\n  \"fleet\": {\n    \"deserunt_7\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"qui5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"esse77d\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/pdp-long",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "pdp-long"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-f2f92a2d-3452-47e0-ba8b-6ffda3da44ba"
+                },
+                {
+                  "id": "69100b29-1ab5-4911-9533-e82d92fc5cd2",
+                  "name": "Daily request limit exceeded or problem size larger than account limits.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"visits\": {\n    \"Ut_0\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    },\n    \"reprehenderit6\": {\n      \"pickup\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      },\n      \"dropoff\": {\n        \"location\": {\n          \"lat\": \"<double>\",\n          \"lng\": \"<double>\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"start\": \"<string>\",\n        \"end\": \"<string>\",\n        \"duration\": \"<integer>\",\n        \"load\": \"<number>\",\n        \"priority\": \"<integer>\",\n        \"type\": \"<string>\"\n      }\n    }\n  },\n  \"fleet\": {\n    \"deserunt_7\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"qui5\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    \"esse77d\": {\n      \"start_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"end_location\": {\n        \"lat\": \"<double>\",\n        \"lng\": \"<double>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"shift_start\": \"<string>\",\n      \"shift_end\": \"<string>\",\n      \"capacity\": \"<number>\",\n      \"min_visits\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"traffic\": \"faster\",\n    \"min_visits_per_vehicle\": \"<integer>\",\n    \"balance\": \"<boolean>\",\n    \"visit_balance_coefficient\": \"<number>\",\n    \"min_vehicles\": false,\n    \"shortest_distance\": false,\n    \"squash_durations\": \"<integer>\",\n    \"max_vehicle_overtime\": \"<integer>\",\n    \"max_visit_lateness\": \"<integer>\",\n    \"polylines\": false,\n    \"avoid_tolls\": false,\n    \"geocoder\": \"google\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/pdp-long",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "pdp-long"
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-69100b29-1ab5-4911-9533-e82d92fc5cd2"
+                }
+              ],
+              "createdAt": "2026-07-28T02:49:04.000Z",
+              "updatedAt": "2026-07-28T02:49:04.000Z",
+              "uid": "35240-2c9dee93-6311-465c-8f3d-b714259adc1a"
+            }
+          ],
+          "id": "2b6909f2-050c-48b0-826a-cc0ceb2094a6",
+          "createdAt": "2026-07-28T02:49:04.000Z",
+          "updatedAt": "2026-07-28T02:49:04.000Z",
+          "uid": "35240-2b6909f2-050c-48b0-826a-cc0ceb2094a6"
+        }
+      ],
+      "id": "6ec2f7e4-9296-4880-b3ee-d05ffcf0cdc4",
+      "createdAt": "2026-07-28T02:49:04.000Z",
+      "updatedAt": "2026-07-28T02:49:04.000Z",
+      "uid": "35240-6ec2f7e4-9296-4880-b3ee-d05ffcf0cdc4"
+    },
+    {
+      "name": "jobs",
+      "item": [
+        {
+          "name": "{job_id}",
+          "item": [
+            {
+              "name": "Get Optimization Job Status",
+              "id": "dae3149f-a5c3-49d9-8ce2-4cf8ded9baf7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/jobs/:job_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "jobs",
+                    ":job_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "d09407c3-639e-491c-a0fb-44e75e5867f9",
+                      "key": "job_id",
+                      "value": "<string>",
+                      "description": "(Required) Identifier returned by `/v1/vrp-long` or `/v1/pdp-long`."
+                    }
+                  ]
+                },
+                "description": "Retrieve the status and result of an asynchronous routing job submitted\nvia `/v1/vrp-long` or `/v1/pdp-long`. Statuses are `pending`,\n`processing`, `finished`, or `error`. When `finished`, the response\npayload is in `output`.\n"
+              },
+              "response": [
+                {
+                  "id": "cefd55f5-1901-464b-9007-52ddac3509fb",
+                  "name": "Current job state",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/jobs/:job_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "jobs",
+                        ":job_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "job_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"finished\",\n  \"job_id\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"finished_at\": \"<dateTime>\",\n  \"output\": {\n    \"status\": \"success\",\n    \"total_travel_time\": \"<integer>\",\n    \"total_idle_time\": \"<integer>\",\n    \"total_working_time\": \"<integer>\",\n    \"total_visit_lateness\": \"<integer>\",\n    \"num_late_visits\": \"<integer>\",\n    \"total_overtime\": \"<integer>\",\n    \"vehicle_overtime\": {\n      \"qui5\": \"<integer>\",\n      \"incididunt66\": \"<integer>\"\n    },\n    \"num_unserved\": \"<integer>\",\n    \"unserved\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"solution\": {\n      \"laborumd\": [\n        {\n          \"location_id\": \"<string>\",\n          \"arrival_time\": \"<string>\",\n          \"finish_time\": \"<string>\",\n          \"type\": \"dropoff\",\n          \"too_late\": \"<boolean>\",\n          \"late_by\": \"<integer>\",\n          \"distance\": \"<number>\"\n        },\n        {\n          \"location_id\": \"<string>\",\n          \"arrival_time\": \"<string>\",\n          \"finish_time\": \"<string>\",\n          \"type\": \"dropoff\",\n          \"too_late\": \"<boolean>\",\n          \"late_by\": \"<integer>\",\n          \"distance\": \"<number>\"\n        }\n      ]\n    },\n    \"polylines\": {\n      \"deserunt_4\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-cefd55f5-1901-464b-9007-52ddac3509fb"
+                },
+                {
+                  "id": "c9a01d22-9a51-42e2-8f24-cc3faa7cd8d1",
+                  "name": "Missing or invalid bearer token.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/jobs/:job_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "jobs",
+                        ":job_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "job_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-c9a01d22-9a51-42e2-8f24-cc3faa7cd8d1"
+                },
+                {
+                  "id": "bafb672c-0ee8-4de4-81b5-1769690c043f",
+                  "name": "Job not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/jobs/:job_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "jobs",
+                        ":job_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "job_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:49:04.000Z",
+                  "updatedAt": "2026-07-28T02:49:04.000Z",
+                  "uid": "35240-bafb672c-0ee8-4de4-81b5-1769690c043f"
+                }
+              ],
+              "createdAt": "2026-07-28T02:49:04.000Z",
+              "updatedAt": "2026-07-28T02:49:04.000Z",
+              "uid": "35240-dae3149f-a5c3-49d9-8ce2-4cf8ded9baf7"
+            }
+          ],
+          "id": "af0f6962-6e3a-477c-877c-348864c3fc65",
+          "createdAt": "2026-07-28T02:49:04.000Z",
+          "updatedAt": "2026-07-28T02:49:04.000Z",
+          "uid": "35240-af0f6962-6e3a-477c-877c-348864c3fc65"
+        }
+      ],
+      "id": "14e171d4-87b5-4803-b7ea-bb3c853438e5",
+      "createdAt": "2026-07-28T02:49:04.000Z",
+      "updatedAt": "2026-07-28T02:49:04.000Z",
+      "uid": "35240-14e171d4-87b5-4803-b7ea-bb3c853438e5"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.routific.com"
+    }
+  ]
+}
