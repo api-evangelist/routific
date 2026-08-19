@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Routific Route Optimization Fix VRP API",
+    "version": "1.11"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "VRP",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Solve Vehicle Routing Problem",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/vrp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Synchronously solve a vehicle routing problem. Send the addresses of\nyour visits and your fleet; the API returns the optimal allocation and\nthe order in which each vehicle should visit them. Use for small problems\n(< 60 visits). Larger problems should use `/v1/vrp-long`.\n"
+        },
+        {
+          "info": {
+            "name": "Solve Vehicle Routing Problem (Async)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/vrp-long",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a vehicle routing problem for asynchronous processing. Returns\na `job_id` immediately; poll `GET /jobs/{job_id}` for status and result.\nHard limit of 2,500 visits per call.\n"
+        },
+        {
+          "info": {
+            "name": "Insert New Visits Into VRP Solution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/fix",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Insert one or more new visits into an existing optimized VRP solution\nwithout re-solving the entire problem. Pass the current `solution`,\nthe remaining `visits`, and the new visit IDs in `unserved`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

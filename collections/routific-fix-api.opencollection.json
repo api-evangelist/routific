@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Routific Route Optimization Fix API",
+    "version": "1.11"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Fix",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Insert New Visits Into VRP Solution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/fix",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Insert one or more new visits into an existing optimized VRP solution\nwithout re-solving the entire problem. Pass the current `solution`,\nthe remaining `visits`, and the new visit IDs in `unserved`.\n"
+        },
+        {
+          "info": {
+            "name": "Insert New Visits Into PDP Solution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.routific.com/v1/fix-pdp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Insert one or more new pickup-and-delivery visits into an existing\noptimized PDP solution without re-solving the entire problem.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
