@@ -215,6 +215,9 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/routific.png
 access: 3rd-Party
 common:
+  - type: CapabilityMap
+    url: capabilities/routific-capability-edges.yml
+    name: Routific Business Capability Map
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/routific/overview
   - type: AgenticAccess
