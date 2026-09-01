@@ -7,7 +7,7 @@ apis:
   humanURL: https://docs.routific.com/reference/getting-started
   baseURL: https://api.routific.com
   tags:
-  - Fix
+  - FIX
   tags_raw:
   - Fix
   properties:
@@ -167,15 +167,15 @@ apis:
     url: rules/routific-rules.yml
 name: Routific
 tags:
-  - RouteOptimization
+  - Route Optimization
   - VRP
-  - PickupAndDelivery
+  - Pickup and Delivery
   - Logistics
-  - LastMileDelivery
+  - Last Mile Delivery
   - Delivery
-  - FleetManagement
+  - Fleet Management
   - Dispatch
-  - DeliveryManagement
+  - Delivery Management
 tags_raw:
   - RouteOptimization
   - VRP
