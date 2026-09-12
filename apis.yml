@@ -216,6 +216,8 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/routific.png
 access: 3rd-Party
 common:
+  - type: Website
+    url: https://www.routific.com/
   - type: CapabilityMap
     url: capabilities/routific-capability-edges.yml
     name: Routific Business Capability Map
