@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 2
+edge_count: 3
 edges:
 - tag: Fix
   spec_file: routific-fix-api-openapi.yml
@@ -33,3 +33,13 @@ edges:
   reason: Operations solve the pickup-and-delivery routing problem for 'last-mile delivery fleets' with
     Vehicle, Visit and Location schemas — i.e. planning/execution of transport moves. Multimodal transport
     operations at L1; evidence spans both pickup and delivery legs so no single L2 is clearly named.
+- tag: VRP
+  spec_file: routific-vrp-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.75
+  evidence: POST /v1/vrp  solveVrp  Solve Vehicle Routing Problem
+  reason: Core vehicle routing optimisation for last-mile delivery fleets (vehicles, visits, driver shifts,
+    capacity) — logistics/transport operations planning.
+  recovered_from: vertical-automotive-mobility-edges.json
