@@ -1,7 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Routific Route Optimization Fix PDP API
-  description: "Routific's Route Optimization API solves the vehicle routing problem (VRP)\nand the pickup-and-delivery problem (PDP) for last-mile delivery fleets.\nIt supports time-windows, capacity constraints, driver shifts, multi-depot\nfleets, balanced routes, traffic simulation, and polyline output.\n\nThe API offers four solving surfaces:\n\n- `POST /v1/vrp` — synchronous vehicle routing for small problems (< 60 visits).\n- `POST /v1/vrp-long` — asynchronous vehicle routing for problems up to 2,500 visits.\n- `POST /v1/pdp-long` — asynchronous pickup-and-delivery routing.\n- `POST /v1/fix` and `POST /v1/fix-pdp` — insert new visits into an\n  existing optimized solution without re-solving the whole problem.\n\nAsynchronous endpoints return a `job_id` immediately; clients poll\n`GET /jobs/{job_id}` until the job reaches `finished` or `error`.\n"
+  title: Routific Route Optimization PDP API
+  description: 'Routific''s Route Optimization API solves the vehicle routing problem (VRP)
+
+    and the pickup-and-delivery problem (PDP) for last-mile delivery fleets.'
   version: '1.11'
   contact:
     name: Routific Support
@@ -29,9 +31,7 @@ paths:
 
         Each visit pairs a pickup and a dropoff location with their own
 
-        time-windows and durations. Returns a `job_id` immediately.
-
-        '
+        time-windows and durations. Returns a `job_id` immediately.'
       operationId: solvePdpLong
       tags:
       - PDP
@@ -54,64 +54,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '429':
           $ref: '#/components/responses/RateLimited'
-  /v1/fix-pdp:
-    post:
-      summary: Insert New Visits Into PDP Solution
-      description: 'Insert one or more new pickup-and-delivery visits into an existing
-
-        optimized PDP solution without re-solving the entire problem.
-
-        '
-      operationId: fixPdp
-      tags:
-      - PDP
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FixPdpRequest'
-      responses:
-        '200':
-          description: Updated solution
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PdpSolution'
-        '400':
-          $ref: '#/components/responses/InputError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    FixPdpRequest:
-      type: object
-      required:
-      - visits
-      - fleet
-      - solution
-      - unserved
-      properties:
-        visits:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/PickupDeliveryVisit'
-        fleet:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Vehicle'
-        options:
-          $ref: '#/components/schemas/Options'
-        solution:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/StopAssignment'
-        unserved:
-          type: array
-          items:
-            type: string
     JobAccepted:
       type: object
       required:
@@ -119,6 +63,17 @@ components:
       properties:
         job_id:
           type: string
+    PickupDeliveryVisit:
+      type: object
+      description: Paired pickup and dropoff entry for the pickup-and-delivery problem.
+      required:
+      - pickup
+      - dropoff
+      properties:
+        pickup:
+          $ref: '#/components/schemas/Visit'
+        dropoff:
+          $ref: '#/components/schemas/Visit'
     Location:
       type: object
       description: Geocoded address for a visit, pickup, dropoff, or depot.
@@ -140,32 +95,23 @@ components:
           type: number
           format: double
           description: Longitude in decimal degrees.
-    StopAssignment:
+    PdpRequest:
       type: object
-      description: A single stop in a vehicle's route.
+      description: Pickup-and-delivery problem request.
+      required:
+      - visits
+      - fleet
       properties:
-        location_id:
-          type: string
-        arrival_time:
-          type: string
-        finish_time:
-          type: string
-        type:
-          type: string
-          enum:
-          - pickup
-          - dropoff
-        too_late:
-          type: boolean
-        late_by:
-          type: integer
-          description: Minutes by which the stop is late (when overtime/lateness options used).
-        distance:
-          type: number
-          description: Meters from the previous stop (when `polylines` is true).
-    PdpSolution:
-      allOf:
-      - $ref: '#/components/schemas/VrpSolution'
+        visits:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PickupDeliveryVisit'
+        fleet:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Vehicle'
+        options:
+          $ref: '#/components/schemas/Options'
     Options:
       type: object
       description: Tunable parameters that adjust how the optimization engine runs.
@@ -227,46 +173,6 @@ components:
           - here
           default: google
           description: Geocoding provider for address strings.
-    Visit:
-      type: object
-      description: A single visit with location, time-window, and service duration.
-      required:
-      - location
-      properties:
-        location:
-          $ref: '#/components/schemas/Location'
-        start:
-          type: string
-          description: Earliest time the visit can begin (`hh:mm` or UNIX seconds).
-          example: '9:00'
-        end:
-          type: string
-          description: Latest time the visit can begin (`hh:mm` or UNIX seconds).
-          example: '12:00'
-        duration:
-          type: integer
-          description: Service duration in minutes.
-          minimum: 1
-        load:
-          oneOf:
-          - type: number
-          - type: object
-            additionalProperties:
-              type: number
-          description: Load contributed by this visit (single value or per-dimension object).
-        priority:
-          type: integer
-          description: Optional priority level.
-        type:
-          oneOf:
-          - type: string
-          - type: number
-          - type: array
-            items:
-              oneOf:
-              - type: string
-              - type: number
-          description: Compatibility type(s) the assigned vehicle must support.
     Vehicle:
       type: object
       description: A single vehicle/driver in the fleet.
@@ -314,82 +220,46 @@ components:
         message:
           type: string
           description: Human-readable error message.
-    VrpSolution:
+    Visit:
       type: object
-      description: Optimized solution returned by the engine.
+      description: A single visit with location, time-window, and service duration.
+      required:
+      - location
       properties:
-        status:
+        location:
+          $ref: '#/components/schemas/Location'
+        start:
           type: string
-          enum:
-          - success
-          - error
-        total_travel_time:
+          description: Earliest time the visit can begin (`hh:mm` or UNIX seconds).
+          example: '9:00'
+        end:
+          type: string
+          description: Latest time the visit can begin (`hh:mm` or UNIX seconds).
+          example: '12:00'
+        duration:
           type: integer
-          description: Total travel time across all vehicles in minutes.
-        total_idle_time:
-          type: integer
-        total_working_time:
-          type: integer
-        total_visit_lateness:
-          type: integer
-        num_late_visits:
-          type: integer
-        total_overtime:
-          type: integer
-        vehicle_overtime:
-          type: object
-          additionalProperties:
-            type: integer
-        num_unserved:
-          type: integer
-        unserved:
+          description: Service duration in minutes.
+          minimum: 1
+        load:
           oneOf:
-          - type: array
-            items:
-              type: string
+          - type: number
           - type: object
             additionalProperties:
-              type: string
-          description: Visits that could not be scheduled (or a map of visit-id to reason).
-        solution:
-          type: object
-          additionalProperties:
-            type: array
+              type: number
+          description: Load contributed by this visit (single value or per-dimension object).
+        priority:
+          type: integer
+          description: Optional priority level.
+        type:
+          oneOf:
+          - type: string
+          - type: number
+          - type: array
             items:
-              $ref: '#/components/schemas/StopAssignment'
-        polylines:
-          type: object
-          additionalProperties:
-            type: string
-          description: Encoded polyline per vehicle (when `options.polylines` is true).
-    PickupDeliveryVisit:
-      type: object
-      description: Paired pickup and dropoff entry for the pickup-and-delivery problem.
-      required:
-      - pickup
-      - dropoff
-      properties:
-        pickup:
-          $ref: '#/components/schemas/Visit'
-        dropoff:
-          $ref: '#/components/schemas/Visit'
-    PdpRequest:
-      type: object
-      description: Pickup-and-delivery problem request.
-      required:
-      - visits
-      - fleet
-      properties:
-        visits:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/PickupDeliveryVisit'
-        fleet:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Vehicle'
-        options:
-          $ref: '#/components/schemas/Options'
+              oneOf:
+              - type: string
+              - type: number
+          description: Compatibility type(s) the assigned vehicle must support.
   responses:
     RateLimited:
       description: Daily request limit exceeded or problem size larger than account limits.
@@ -397,14 +267,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InputError:
-      description: Input error — see the error message and code for details.
+    Unauthorized:
+      description: Missing or invalid bearer token.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid bearer token.
+    InputError:
+      description: Input error — see the error message and code for details.
       content:
         application/json:
           schema:

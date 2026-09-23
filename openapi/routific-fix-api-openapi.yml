@@ -1,7 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Routific Route Optimization Fix API
-  description: "Routific's Route Optimization API solves the vehicle routing problem (VRP)\nand the pickup-and-delivery problem (PDP) for last-mile delivery fleets.\nIt supports time-windows, capacity constraints, driver shifts, multi-depot\nfleets, balanced routes, traffic simulation, and polyline output.\n\nThe API offers four solving surfaces:\n\n- `POST /v1/vrp` — synchronous vehicle routing for small problems (< 60 visits).\n- `POST /v1/vrp-long` — asynchronous vehicle routing for problems up to 2,500 visits.\n- `POST /v1/pdp-long` — asynchronous pickup-and-delivery routing.\n- `POST /v1/fix` and `POST /v1/fix-pdp` — insert new visits into an\n  existing optimized solution without re-solving the whole problem.\n\nAsynchronous endpoints return a `job_id` immediately; clients poll\n`GET /jobs/{job_id}` until the job reaches `finished` or `error`.\n"
+  description: 'Routific''s Route Optimization API solves the vehicle routing problem (VRP)
+
+    and the pickup-and-delivery problem (PDP) for last-mile delivery fleets.'
   version: '1.11'
   contact:
     name: Routific Support
@@ -29,9 +31,7 @@ paths:
 
         without re-solving the entire problem. Pass the current `solution`,
 
-        the remaining `visits`, and the new visit IDs in `unserved`.
-
-        '
+        the remaining `visits`, and the new visit IDs in `unserved`.'
       operationId: fixVrp
       tags:
       - Fix
@@ -57,9 +57,7 @@ paths:
       summary: Insert New Visits Into PDP Solution
       description: 'Insert one or more new pickup-and-delivery visits into an existing
 
-        optimized PDP solution without re-solving the entire problem.
-
-        '
+        optimized PDP solution without re-solving the entire problem.'
       operationId: fixPdp
       tags:
       - Fix
@@ -82,6 +80,9 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    PdpSolution:
+      allOf:
+      - $ref: '#/components/schemas/VrpSolution'
     FixPdpRequest:
       type: object
       required:
@@ -133,6 +134,17 @@ components:
         distance:
           type: number
           description: Meters from the previous stop (when `polylines` is true).
+    PickupDeliveryVisit:
+      type: object
+      description: Paired pickup and dropoff entry for the pickup-and-delivery problem.
+      required:
+      - pickup
+      - dropoff
+      properties:
+        pickup:
+          $ref: '#/components/schemas/Visit'
+        dropoff:
+          $ref: '#/components/schemas/Visit'
     Location:
       type: object
       description: Geocoded address for a visit, pickup, dropoff, or depot.
@@ -154,39 +166,6 @@ components:
           type: number
           format: double
           description: Longitude in decimal degrees.
-    PdpSolution:
-      allOf:
-      - $ref: '#/components/schemas/VrpSolution'
-    FixRequest:
-      type: object
-      required:
-      - visits
-      - fleet
-      - solution
-      - unserved
-      properties:
-        visits:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Visit'
-        fleet:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Vehicle'
-        options:
-          $ref: '#/components/schemas/Options'
-        solution:
-          type: object
-          description: Existing solution — map of vehicle ID to ordered list of visit IDs.
-          additionalProperties:
-            type: array
-            items:
-              type: string
-        unserved:
-          type: array
-          description: New visit IDs to insert into the existing solution.
-          items:
-            type: string
     Options:
       type: object
       description: Tunable parameters that adjust how the optimization engine runs.
@@ -383,26 +362,45 @@ components:
               - type: string
               - type: number
           description: Compatibility type(s) the assigned vehicle must support.
-    PickupDeliveryVisit:
+    FixRequest:
       type: object
-      description: Paired pickup and dropoff entry for the pickup-and-delivery problem.
       required:
-      - pickup
-      - dropoff
+      - visits
+      - fleet
+      - solution
+      - unserved
       properties:
-        pickup:
-          $ref: '#/components/schemas/Visit'
-        dropoff:
-          $ref: '#/components/schemas/Visit'
+        visits:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Visit'
+        fleet:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Vehicle'
+        options:
+          $ref: '#/components/schemas/Options'
+        solution:
+          type: object
+          description: Existing solution — map of vehicle ID to ordered list of visit IDs.
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        unserved:
+          type: array
+          description: New visit IDs to insert into the existing solution.
+          items:
+            type: string
   responses:
-    InputError:
-      description: Input error — see the error message and code for details.
+    Unauthorized:
+      description: Missing or invalid bearer token.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid bearer token.
+    InputError:
+      description: Input error — see the error message and code for details.
       content:
         application/json:
           schema:
