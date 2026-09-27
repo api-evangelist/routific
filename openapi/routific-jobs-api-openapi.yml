@@ -60,40 +60,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid bearer token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    Job:
+    StopAssignment:
       type: object
-      description: Asynchronous optimization job state.
-      required:
-      - status
+      description: A single stop in a vehicle's route.
       properties:
-        job_id:
+        location_id:
           type: string
-        status:
+        arrival_time:
+          type: string
+        finish_time:
+          type: string
+        type:
           type: string
           enum:
-          - pending
-          - processing
-          - finished
-          - error
-        created_at:
+          - pickup
+          - dropoff
+        too_late:
+          type: boolean
+        late_by:
+          type: integer
+          description: Minutes by which the stop is late (when overtime/lateness options used).
+        distance:
+          type: number
+          description: Meters from the previous stop (when `polylines` is true).
+    ErrorResponse:
+      type: object
+      properties:
+        error:
           type: string
-          format: date-time
-        finished_at:
+          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
+        message:
           type: string
-          format: date-time
-        output:
-          oneOf:
-          - $ref: '#/components/schemas/VrpSolution'
-          - type: string
-          description: Solution payload when status is `finished`; error message when `error`.
+          description: Human-readable error message.
     VrpSolution:
       type: object
       description: Optimized solution returned by the engine.
@@ -142,38 +141,39 @@ components:
           additionalProperties:
             type: string
           description: Encoded polyline per vehicle (when `options.polylines` is true).
-    StopAssignment:
+    Job:
       type: object
-      description: A single stop in a vehicle's route.
+      description: Asynchronous optimization job state.
+      required:
+      - status
       properties:
-        location_id:
+        job_id:
           type: string
-        arrival_time:
-          type: string
-        finish_time:
-          type: string
-        type:
+        status:
           type: string
           enum:
-          - pickup
-          - dropoff
-        too_late:
-          type: boolean
-        late_by:
-          type: integer
-          description: Minutes by which the stop is late (when overtime/lateness options used).
-        distance:
-          type: number
-          description: Meters from the previous stop (when `polylines` is true).
-    ErrorResponse:
-      type: object
-      properties:
-        error:
+          - pending
+          - processing
+          - finished
+          - error
+        created_at:
           type: string
-          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
-        message:
+          format: date-time
+        finished_at:
           type: string
-          description: Human-readable error message.
+          format: date-time
+        output:
+          oneOf:
+          - $ref: '#/components/schemas/VrpSolution'
+          - type: string
+          description: Solution payload when status is `finished`; error message when `error`.
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     BearerAuth:
       type: http
