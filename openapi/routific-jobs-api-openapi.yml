@@ -61,6 +61,15 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
+        message:
+          type: string
+          description: Human-readable error message.
     StopAssignment:
       type: object
       description: A single stop in a vehicle's route.
@@ -84,15 +93,32 @@ components:
         distance:
           type: number
           description: Meters from the previous stop (when `polylines` is true).
-    ErrorResponse:
+    Job:
       type: object
+      description: Asynchronous optimization job state.
+      required:
+      - status
       properties:
-        error:
+        job_id:
           type: string
-          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
-        message:
+        status:
           type: string
-          description: Human-readable error message.
+          enum:
+          - pending
+          - processing
+          - finished
+          - error
+        created_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+        output:
+          oneOf:
+          - $ref: '#/components/schemas/VrpSolution'
+          - type: string
+          description: Solution payload when status is `finished`; error message when `error`.
     VrpSolution:
       type: object
       description: Optimized solution returned by the engine.
@@ -141,32 +167,6 @@ components:
           additionalProperties:
             type: string
           description: Encoded polyline per vehicle (when `options.polylines` is true).
-    Job:
-      type: object
-      description: Asynchronous optimization job state.
-      required:
-      - status
-      properties:
-        job_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - pending
-          - processing
-          - finished
-          - error
-        created_at:
-          type: string
-          format: date-time
-        finished_at:
-          type: string
-          format: date-time
-        output:
-          oneOf:
-          - $ref: '#/components/schemas/VrpSolution'
-          - type: string
-          description: Solution payload when status is `finished`; error message when `error`.
   responses:
     Unauthorized:
       description: Missing or invalid bearer token.

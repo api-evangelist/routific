@@ -96,7 +96,100 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
+  responses:
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    RateLimited:
+      description: Daily request limit exceeded or problem size larger than account limits.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NoSolution:
+      description: No solution could be found — usually due to incorrect time-windows.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InputError:
+      description: Input error — see the error message and code for details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    RequestTimeout:
+      description: Request was too large for the synchronous endpoint — use `/v1/vrp-long` or `/v1/pdp-long`.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    JobAccepted:
+      type: object
+      required:
+      - job_id
+      properties:
+        job_id:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
+        message:
+          type: string
+          description: Human-readable error message.
+    Visit:
+      type: object
+      description: A single visit with location, time-window, and service duration.
+      required:
+      - location
+      properties:
+        location:
+          $ref: '#/components/schemas/Location'
+        start:
+          type: string
+          description: Earliest time the visit can begin (`hh:mm` or UNIX seconds).
+          example: '9:00'
+        end:
+          type: string
+          description: Latest time the visit can begin (`hh:mm` or UNIX seconds).
+          example: '12:00'
+        duration:
+          type: integer
+          description: Service duration in minutes.
+          minimum: 1
+        load:
+          oneOf:
+          - type: number
+          - type: object
+            additionalProperties:
+              type: number
+          description: Load contributed by this visit (single value or per-dimension object).
+        priority:
+          type: integer
+          description: Optional priority level.
+        type:
+          oneOf:
+          - type: string
+          - type: number
+          - type: array
+            items:
+              oneOf:
+              - type: string
+              - type: number
+          description: Compatibility type(s) the assigned vehicle must support.
     StopAssignment:
       type: object
       description: A single stop in a vehicle's route.
@@ -139,15 +232,113 @@ components:
             $ref: '#/components/schemas/Vehicle'
         options:
           $ref: '#/components/schemas/Options'
-    ErrorResponse:
+    Location:
       type: object
+      description: Geocoded address for a visit, pickup, dropoff, or depot.
+      required:
+      - lat
+      - lng
       properties:
-        error:
+        id:
           type: string
-          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
-        message:
+          description: Optional location identifier (e.g. `depot`).
+        name:
           type: string
-          description: Human-readable error message.
+          description: Human-readable address.
+        lat:
+          type: number
+          format: double
+          description: Latitude in decimal degrees.
+        lng:
+          type: number
+          format: double
+          description: Longitude in decimal degrees.
+    Vehicle:
+      type: object
+      description: A single vehicle/driver in the fleet.
+      required:
+      - start_location
+      properties:
+        start_location:
+          $ref: '#/components/schemas/Location'
+        end_location:
+          $ref: '#/components/schemas/Location'
+        shift_start:
+          type: string
+          description: Earliest time the driver can begin (`hh:mm` or UNIX seconds).
+          example: '8:00'
+        shift_end:
+          type: string
+          description: Latest time the driver must finish (`hh:mm` or UNIX seconds).
+          example: '17:00'
+        capacity:
+          oneOf:
+          - type: number
+          - type: object
+            additionalProperties:
+              type: number
+          description: Vehicle capacity (single value or per-dimension object).
+        min_visits:
+          type: integer
+          description: Minimum number of visits the vehicle must handle.
+        type:
+          oneOf:
+          - type: string
+          - type: number
+          - type: array
+            items:
+              oneOf:
+              - type: string
+              - type: number
+          description: Compatibility type(s) the vehicle supports.
+    VrpSolution:
+      type: object
+      description: Optimized solution returned by the engine.
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+          - error
+        total_travel_time:
+          type: integer
+          description: Total travel time across all vehicles in minutes.
+        total_idle_time:
+          type: integer
+        total_working_time:
+          type: integer
+        total_visit_lateness:
+          type: integer
+        num_late_visits:
+          type: integer
+        total_overtime:
+          type: integer
+        vehicle_overtime:
+          type: object
+          additionalProperties:
+            type: integer
+        num_unserved:
+          type: integer
+        unserved:
+          oneOf:
+          - type: array
+            items:
+              type: string
+          - type: object
+            additionalProperties:
+              type: string
+          description: Visits that could not be scheduled (or a map of visit-id to reason).
+        solution:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/StopAssignment'
+        polylines:
+          type: object
+          additionalProperties:
+            type: string
+          description: Encoded polyline per vehicle (when `options.polylines` is true).
     Options:
       type: object
       description: Tunable parameters that adjust how the optimization engine runs.
@@ -209,197 +400,6 @@ components:
           - here
           default: google
           description: Geocoding provider for address strings.
-    VrpSolution:
-      type: object
-      description: Optimized solution returned by the engine.
-      properties:
-        status:
-          type: string
-          enum:
-          - success
-          - error
-        total_travel_time:
-          type: integer
-          description: Total travel time across all vehicles in minutes.
-        total_idle_time:
-          type: integer
-        total_working_time:
-          type: integer
-        total_visit_lateness:
-          type: integer
-        num_late_visits:
-          type: integer
-        total_overtime:
-          type: integer
-        vehicle_overtime:
-          type: object
-          additionalProperties:
-            type: integer
-        num_unserved:
-          type: integer
-        unserved:
-          oneOf:
-          - type: array
-            items:
-              type: string
-          - type: object
-            additionalProperties:
-              type: string
-          description: Visits that could not be scheduled (or a map of visit-id to reason).
-        solution:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/StopAssignment'
-        polylines:
-          type: object
-          additionalProperties:
-            type: string
-          description: Encoded polyline per vehicle (when `options.polylines` is true).
-    Visit:
-      type: object
-      description: A single visit with location, time-window, and service duration.
-      required:
-      - location
-      properties:
-        location:
-          $ref: '#/components/schemas/Location'
-        start:
-          type: string
-          description: Earliest time the visit can begin (`hh:mm` or UNIX seconds).
-          example: '9:00'
-        end:
-          type: string
-          description: Latest time the visit can begin (`hh:mm` or UNIX seconds).
-          example: '12:00'
-        duration:
-          type: integer
-          description: Service duration in minutes.
-          minimum: 1
-        load:
-          oneOf:
-          - type: number
-          - type: object
-            additionalProperties:
-              type: number
-          description: Load contributed by this visit (single value or per-dimension object).
-        priority:
-          type: integer
-          description: Optional priority level.
-        type:
-          oneOf:
-          - type: string
-          - type: number
-          - type: array
-            items:
-              oneOf:
-              - type: string
-              - type: number
-          description: Compatibility type(s) the assigned vehicle must support.
-    Vehicle:
-      type: object
-      description: A single vehicle/driver in the fleet.
-      required:
-      - start_location
-      properties:
-        start_location:
-          $ref: '#/components/schemas/Location'
-        end_location:
-          $ref: '#/components/schemas/Location'
-        shift_start:
-          type: string
-          description: Earliest time the driver can begin (`hh:mm` or UNIX seconds).
-          example: '8:00'
-        shift_end:
-          type: string
-          description: Latest time the driver must finish (`hh:mm` or UNIX seconds).
-          example: '17:00'
-        capacity:
-          oneOf:
-          - type: number
-          - type: object
-            additionalProperties:
-              type: number
-          description: Vehicle capacity (single value or per-dimension object).
-        min_visits:
-          type: integer
-          description: Minimum number of visits the vehicle must handle.
-        type:
-          oneOf:
-          - type: string
-          - type: number
-          - type: array
-            items:
-              oneOf:
-              - type: string
-              - type: number
-          description: Compatibility type(s) the vehicle supports.
-    Location:
-      type: object
-      description: Geocoded address for a visit, pickup, dropoff, or depot.
-      required:
-      - lat
-      - lng
-      properties:
-        id:
-          type: string
-          description: Optional location identifier (e.g. `depot`).
-        name:
-          type: string
-          description: Human-readable address.
-        lat:
-          type: number
-          format: double
-          description: Latitude in decimal degrees.
-        lng:
-          type: number
-          format: double
-          description: Longitude in decimal degrees.
-    JobAccepted:
-      type: object
-      required:
-      - job_id
-      properties:
-        job_id:
-          type: string
-  responses:
-    InputError:
-      description: Input error — see the error message and code for details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    RequestTimeout:
-      description: Request was too large for the synchronous endpoint — use `/v1/vrp-long` or `/v1/pdp-long`.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NoSolution:
-      description: No solution could be found — usually due to incorrect time-windows.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid bearer token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    RateLimited:
-      description: Daily request limit exceeded or problem size larger than account limits.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   examples:
     VrpRequestExample:
       summary: Minimal VRP request
