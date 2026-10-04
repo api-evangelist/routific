@@ -56,33 +56,6 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    PickupDeliveryVisit:
-      type: object
-      description: Paired pickup and dropoff entry for the pickup-and-delivery problem.
-      required:
-      - pickup
-      - dropoff
-      properties:
-        pickup:
-          $ref: '#/components/schemas/Visit'
-        dropoff:
-          $ref: '#/components/schemas/Visit'
-    JobAccepted:
-      type: object
-      required:
-      - job_id
-      properties:
-        job_id:
-          type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
-        message:
-          type: string
-          description: Human-readable error message.
     Visit:
       type: object
       description: A single visit with location, time-window, and service duration.
@@ -123,6 +96,30 @@ components:
               - type: string
               - type: number
           description: Compatibility type(s) the assigned vehicle must support.
+    PdpRequest:
+      type: object
+      description: Pickup-and-delivery problem request.
+      required:
+      - visits
+      - fleet
+      properties:
+        visits:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PickupDeliveryVisit'
+        fleet:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Vehicle'
+        options:
+          $ref: '#/components/schemas/Options'
+    JobAccepted:
+      type: object
+      required:
+      - job_id
+      properties:
+        job_id:
+          type: string
     Location:
       type: object
       description: Geocoded address for a visit, pickup, dropoff, or depot.
@@ -182,23 +179,6 @@ components:
               - type: string
               - type: number
           description: Compatibility type(s) the vehicle supports.
-    PdpRequest:
-      type: object
-      description: Pickup-and-delivery problem request.
-      required:
-      - visits
-      - fleet
-      properties:
-        visits:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/PickupDeliveryVisit'
-        fleet:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Vehicle'
-        options:
-          $ref: '#/components/schemas/Options'
     Options:
       type: object
       description: Tunable parameters that adjust how the optimization engine runs.
@@ -260,6 +240,26 @@ components:
           - here
           default: google
           description: Geocoding provider for address strings.
+    PickupDeliveryVisit:
+      type: object
+      description: Paired pickup and dropoff entry for the pickup-and-delivery problem.
+      required:
+      - pickup
+      - dropoff
+      properties:
+        pickup:
+          $ref: '#/components/schemas/Visit'
+        dropoff:
+          $ref: '#/components/schemas/Visit'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
+        message:
+          type: string
+          description: Human-readable error message.
   responses:
     RateLimited:
       description: Daily request limit exceeded or problem size larger than account limits.

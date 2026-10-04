@@ -96,60 +96,7 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
-  responses:
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    RateLimited:
-      description: Daily request limit exceeded or problem size larger than account limits.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NoSolution:
-      description: No solution could be found — usually due to incorrect time-windows.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InputError:
-      description: Input error — see the error message and code for details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    RequestTimeout:
-      description: Request was too large for the synchronous endpoint — use `/v1/vrp-long` or `/v1/pdp-long`.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid bearer token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    JobAccepted:
-      type: object
-      required:
-      - job_id
-      properties:
-        job_id:
-          type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
-        message:
-          type: string
-          description: Human-readable error message.
     Visit:
       type: object
       description: A single visit with location, time-window, and service duration.
@@ -213,6 +160,61 @@ components:
         distance:
           type: number
           description: Meters from the previous stop (when `polylines` is true).
+    VrpSolution:
+      type: object
+      description: Optimized solution returned by the engine.
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+          - error
+        total_travel_time:
+          type: integer
+          description: Total travel time across all vehicles in minutes.
+        total_idle_time:
+          type: integer
+        total_working_time:
+          type: integer
+        total_visit_lateness:
+          type: integer
+        num_late_visits:
+          type: integer
+        total_overtime:
+          type: integer
+        vehicle_overtime:
+          type: object
+          additionalProperties:
+            type: integer
+        num_unserved:
+          type: integer
+        unserved:
+          oneOf:
+          - type: array
+            items:
+              type: string
+          - type: object
+            additionalProperties:
+              type: string
+          description: Visits that could not be scheduled (or a map of visit-id to reason).
+        solution:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/StopAssignment'
+        polylines:
+          type: object
+          additionalProperties:
+            type: string
+          description: Encoded polyline per vehicle (when `options.polylines` is true).
+    JobAccepted:
+      type: object
+      required:
+      - job_id
+      properties:
+        job_id:
+          type: string
     VrpRequest:
       type: object
       description: Vehicle routing problem request.
@@ -291,54 +293,6 @@ components:
               - type: string
               - type: number
           description: Compatibility type(s) the vehicle supports.
-    VrpSolution:
-      type: object
-      description: Optimized solution returned by the engine.
-      properties:
-        status:
-          type: string
-          enum:
-          - success
-          - error
-        total_travel_time:
-          type: integer
-          description: Total travel time across all vehicles in minutes.
-        total_idle_time:
-          type: integer
-        total_working_time:
-          type: integer
-        total_visit_lateness:
-          type: integer
-        num_late_visits:
-          type: integer
-        total_overtime:
-          type: integer
-        vehicle_overtime:
-          type: object
-          additionalProperties:
-            type: integer
-        num_unserved:
-          type: integer
-        unserved:
-          oneOf:
-          - type: array
-            items:
-              type: string
-          - type: object
-            additionalProperties:
-              type: string
-          description: Visits that could not be scheduled (or a map of visit-id to reason).
-        solution:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/StopAssignment'
-        polylines:
-          type: object
-          additionalProperties:
-            type: string
-          description: Encoded polyline per vehicle (when `options.polylines` is true).
     Options:
       type: object
       description: Tunable parameters that adjust how the optimization engine runs.
@@ -400,6 +354,52 @@ components:
           - here
           default: google
           description: Geocoding provider for address strings.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
+        message:
+          type: string
+          description: Human-readable error message.
+  responses:
+    NoSolution:
+      description: No solution could be found — usually due to incorrect time-windows.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    RateLimited:
+      description: Daily request limit exceeded or problem size larger than account limits.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InputError:
+      description: Input error — see the error message and code for details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    RequestTimeout:
+      description: Request was too large for the synchronous endpoint — use `/v1/vrp-long` or `/v1/pdp-long`.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   examples:
     VrpRequestExample:
       summary: Minimal VRP request

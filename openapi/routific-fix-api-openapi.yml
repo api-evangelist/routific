@@ -80,20 +80,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    PdpSolution:
-      allOf:
-      - $ref: '#/components/schemas/VrpSolution'
-    PickupDeliveryVisit:
-      type: object
-      description: Paired pickup and dropoff entry for the pickup-and-delivery problem.
-      required:
-      - pickup
-      - dropoff
-      properties:
-        pickup:
-          $ref: '#/components/schemas/Visit'
-        dropoff:
-          $ref: '#/components/schemas/Visit'
     FixPdpRequest:
       type: object
       required:
@@ -122,15 +108,6 @@ components:
           type: array
           items:
             type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
-        message:
-          type: string
-          description: Human-readable error message.
     Visit:
       type: object
       description: A single visit with location, time-window, and service duration.
@@ -194,95 +171,6 @@ components:
         distance:
           type: number
           description: Meters from the previous stop (when `polylines` is true).
-    Location:
-      type: object
-      description: Geocoded address for a visit, pickup, dropoff, or depot.
-      required:
-      - lat
-      - lng
-      properties:
-        id:
-          type: string
-          description: Optional location identifier (e.g. `depot`).
-        name:
-          type: string
-          description: Human-readable address.
-        lat:
-          type: number
-          format: double
-          description: Latitude in decimal degrees.
-        lng:
-          type: number
-          format: double
-          description: Longitude in decimal degrees.
-    Vehicle:
-      type: object
-      description: A single vehicle/driver in the fleet.
-      required:
-      - start_location
-      properties:
-        start_location:
-          $ref: '#/components/schemas/Location'
-        end_location:
-          $ref: '#/components/schemas/Location'
-        shift_start:
-          type: string
-          description: Earliest time the driver can begin (`hh:mm` or UNIX seconds).
-          example: '8:00'
-        shift_end:
-          type: string
-          description: Latest time the driver must finish (`hh:mm` or UNIX seconds).
-          example: '17:00'
-        capacity:
-          oneOf:
-          - type: number
-          - type: object
-            additionalProperties:
-              type: number
-          description: Vehicle capacity (single value or per-dimension object).
-        min_visits:
-          type: integer
-          description: Minimum number of visits the vehicle must handle.
-        type:
-          oneOf:
-          - type: string
-          - type: number
-          - type: array
-            items:
-              oneOf:
-              - type: string
-              - type: number
-          description: Compatibility type(s) the vehicle supports.
-    FixRequest:
-      type: object
-      required:
-      - visits
-      - fleet
-      - solution
-      - unserved
-      properties:
-        visits:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Visit'
-        fleet:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Vehicle'
-        options:
-          $ref: '#/components/schemas/Options'
-        solution:
-          type: object
-          description: Existing solution — map of vehicle ID to ordered list of visit IDs.
-          additionalProperties:
-            type: array
-            items:
-              type: string
-        unserved:
-          type: array
-          description: New visit IDs to insert into the existing solution.
-          items:
-            type: string
     VrpSolution:
       type: object
       description: Optimized solution returned by the engine.
@@ -331,6 +219,76 @@ components:
           additionalProperties:
             type: string
           description: Encoded polyline per vehicle (when `options.polylines` is true).
+    PickupDeliveryVisit:
+      type: object
+      description: Paired pickup and dropoff entry for the pickup-and-delivery problem.
+      required:
+      - pickup
+      - dropoff
+      properties:
+        pickup:
+          $ref: '#/components/schemas/Visit'
+        dropoff:
+          $ref: '#/components/schemas/Visit'
+    Vehicle:
+      type: object
+      description: A single vehicle/driver in the fleet.
+      required:
+      - start_location
+      properties:
+        start_location:
+          $ref: '#/components/schemas/Location'
+        end_location:
+          $ref: '#/components/schemas/Location'
+        shift_start:
+          type: string
+          description: Earliest time the driver can begin (`hh:mm` or UNIX seconds).
+          example: '8:00'
+        shift_end:
+          type: string
+          description: Latest time the driver must finish (`hh:mm` or UNIX seconds).
+          example: '17:00'
+        capacity:
+          oneOf:
+          - type: number
+          - type: object
+            additionalProperties:
+              type: number
+          description: Vehicle capacity (single value or per-dimension object).
+        min_visits:
+          type: integer
+          description: Minimum number of visits the vehicle must handle.
+        type:
+          oneOf:
+          - type: string
+          - type: number
+          - type: array
+            items:
+              oneOf:
+              - type: string
+              - type: number
+          description: Compatibility type(s) the vehicle supports.
+    Location:
+      type: object
+      description: Geocoded address for a visit, pickup, dropoff, or depot.
+      required:
+      - lat
+      - lng
+      properties:
+        id:
+          type: string
+          description: Optional location identifier (e.g. `depot`).
+        name:
+          type: string
+          description: Human-readable address.
+        lat:
+          type: number
+          format: double
+          description: Latitude in decimal degrees.
+        lng:
+          type: number
+          format: double
+          description: Longitude in decimal degrees.
     Options:
       type: object
       description: Tunable parameters that adjust how the optimization engine runs.
@@ -392,6 +350,48 @@ components:
           - here
           default: google
           description: Geocoding provider for address strings.
+    PdpSolution:
+      allOf:
+      - $ref: '#/components/schemas/VrpSolution'
+    FixRequest:
+      type: object
+      required:
+      - visits
+      - fleet
+      - solution
+      - unserved
+      properties:
+        visits:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Visit'
+        fleet:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Vehicle'
+        options:
+          $ref: '#/components/schemas/Options'
+        solution:
+          type: object
+          description: Existing solution — map of vehicle ID to ordered list of visit IDs.
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        unserved:
+          type: array
+          description: New visit IDs to insert into the existing solution.
+          items:
+            type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Routific error code (e.g. `ERR_DRIVER_NOT_SAME_REGION`).
+        message:
+          type: string
+          description: Human-readable error message.
   responses:
     InputError:
       description: Input error — see the error message and code for details.
