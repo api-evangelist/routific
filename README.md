@@ -1,4 +1,4 @@
-# Routific (routific)
+# Routific
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,93 +66,172 @@
 
 Routific is a Vancouver-based delivery management and route optimization software provider. Its platform combines smart route optimization, dispatch and live tracking, a driver mobile app, customer delivery notifications with real-time tracking, and proof of delivery. The standalone Route Optimization API exposes the same engine — solving Vehicle Routing Problems (VRP) and Pickup-and-Delivery Problems (PDP) — to SaaS integrators and channel partners. Routific has optimized over 191 million deliveries for more than 1,000 businesses since founding.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/routific/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/routific/refs/heads/main/apis.yml)
+**Areas:** Route Optimization · VRP · Pickup and Delivery · Logistics · Last Mile Delivery · Delivery · Fleet Management · Dispatch · Delivery Management
 
-## Scope
+## Routific on APIs.io
 
-- **Position:** Producing
-- **Access:** 3rd-Party
+Everything profiled for Routific is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/routific/](https://apis.io/providers/routific/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (4)
 
-- RouteOptimization
-- VRP
-- PickupAndDelivery
-- Logistics
-- LastMileDelivery
-- Delivery
-- FleetManagement
-- Dispatch
-- DeliveryManagement
+- [Routific Fix API](https://apis.io/apis/routific/routific-fix-api/) — Insert new visits into an existing optimized solution.
+- [Routific Jobs API](https://apis.io/apis/routific/routific-jobs-api/) — Asynchronous long-running optimization jobs.
+- [Routific PDP API](https://apis.io/apis/routific/routific-pdp-api/) — Pickup and Delivery Problem — paired pickup/dropoff routing.
+- [Routific VRP API](https://apis.io/apis/routific/routific-vrp-api/) — Vehicle Routing Problem — assign and order visits across a fleet.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-25
-- **Modified:** 2026-05-25
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Agentic access (1)
 
-### Routific Route Optimization API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-Routific's Route Optimization API solves the Vehicle Routing Problem (VRP) and Pickup-and-Delivery Problem (PDP) for last-mile delivery fleets. It supports time-windows, capacity constraints, multi-depot fleets, driver shifts, balanced routes, traffic simulation, polyline output, toll avoidance, and Google or Here geocoding. Synchronous /v1/vrp handles small problems; asynchronous /v1/vrp-long and /v1/pdp-long process up to 2,500 visits per call via a job_id polling pattern. /v1/fix and /v1/fix-pdp insert new visits into existing solutions without re-solving.
+- [Routific Agentic Access](https://apis.io/agentic-access/routific/routific-agentic-access/)
 
-- **Human URL:** [https://docs.routific.com/reference/getting-started](https://docs.routific.com/reference/getting-started)
-- **Base URL:** `https://api.routific.com`
+#### JSON Schema (4)
 
-#### Tags
+The data models the API reads and writes.
 
-- RouteOptimization
-- VRP
-- PickupAndDelivery
-- Logistics
-- Delivery
-- FleetManagement
+- [Routific Optimization Job](https://apis.io/schemas/routific/routific-job/)
+- [Routific Solution](https://apis.io/schemas/routific/routific-solution/)
+- [Routific Vehicle](https://apis.io/schemas/routific/routific-vehicle/)
+- [Routific Visit](https://apis.io/schemas/routific/routific-visit/)
 
-#### Properties
+#### JSON Structure (1)
 
-- [Documentation](https://docs.routific.com/reference/getting-started)
-- [Documentation](https://docs.routific.com/reference/options)
-- [Documentation](https://docs.routific.com/reference/re-optimize-solution)
-- [Documentation](https://docs.routific.com/reference/error-codes)
-- [L L Ms Txt](https://docs.routific.com/llms.txt)
-- [OpenAPI](openapi/routific-route-optimization-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/routific-route-optimization-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/routific-route-optimization-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/routific-visit-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/routific-vehicle-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/routific-solution-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/routific-job-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Structure](json-structure/routific-vrp-structure.json)
-- [JSON-LD](json-ld/routific-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [Example](examples/routific-solve-vrp-example.json)
-- [Example](examples/routific-solve-vrp-long-example.json)
-- [Example](examples/routific-fix-vrp-example.json)
-- [Spectral Rules](rules/routific-rules.yml)
+Data models expressed in JSON Structure.
 
-## Common Properties
+- [Routific Vrp Structure](https://apis.io/json-structure/routific/routific-vrp-structure/)
 
-- [LinkedIn](https://www.linkedin.com/company/routific)
-- [Twitter](https://twitter.com/routific)
-- [Git Hub](https://github.com/routific)
-- [Portal](https://routific.com)
-- [Developer](https://dev.routific.com)
-- [Signup](https://dev.routific.com/signup)
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Routific Context](https://apis.io/jsonld/routific/routific-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Routific Vocabulary](https://apis.io/vocabularies/routific/routific-vocabulary/)
+
+#### Examples (3)
+
+Example requests and responses.
+
+- [Routific Fix Vrp Example](https://apis.io/examples/routific/routific-fix-vrp-example/)
+- [Routific Solve Vrp Example](https://apis.io/examples/routific/routific-solve-vrp-example/)
+- [Routific Solve Vrp Long Example](https://apis.io/examples/routific/routific-solve-vrp-long-example/)
+
+#### Collections (9)
+
+Postman and Open Collection request collections.
+
+- [Routific Route Optimization Fix API](https://apis.io/collections/routific/open-routific-fix-api/)
+- [Routific Route Optimization Fix Jobs API](https://apis.io/collections/routific/open-routific-jobs-api/)
+- [Routific Route Optimization Fix PDP API](https://apis.io/collections/routific/open-routific-pdp-api/)
+- [Routific Route Optimization API](https://apis.io/collections/routific/open-routific-route-optimization-api/)
+- [Routific Route Optimization Fix VRP API](https://apis.io/collections/routific/open-routific-vrp-api/)
+- [Routific Route Optimization Fix API](https://apis.io/collections/routific/postman-routific-fix-api/)
+- [Routific Route Optimization Fix Jobs API](https://apis.io/collections/routific/postman-routific-jobs-api/)
+- [Routific Route Optimization Fix PDP API](https://apis.io/collections/routific/postman-routific-pdp-api/)
+- [Routific Route Optimization Fix VRP API](https://apis.io/collections/routific/postman-routific-vrp-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Routific — jsonschema rules](https://apis.io/rules/routific/routific-jsonschema-spectral-rules/)
+- [Routific API Rules](https://apis.io/rules/routific/routific-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Routific Authentication](https://apis.io/security/routific/routific-authentication/)
+- [Routific Domain Security](https://apis.io/security/routific/routific-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Routific Plans Pricing](https://apis.io/plans/routific/routific-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Routific Rate Limits](https://apis.io/rate-limits/routific/routific-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Routific Finops](https://apis.io/finops/routific/routific-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.routific.com/)
 - [Documentation](https://docs.routific.com)
-- [Documentation](https://docs.routific.com/reference/getting-started)
-- [Errors](https://docs.routific.com/reference/error-codes)
-- [Status Page](https://status.routific.com)
+- [Pricing](https://routific.com/pricing)
 - [Support](https://help.routific.com)
 - [Blog](https://routific.com/blog)
-- [Pricing](https://routific.com/pricing)
-- [Documentation](https://academy.routific.com)
-- [Support](mailto:support@routific.com)
-- [Plans](plans/routific-plans-pricing.yml)
-- [Rate Limits](rate-limits/routific-rate-limits.yml)
-- [Fin Ops](finops/routific-finops.yml)
-- [Vocabulary](vocabulary/routific-vocabulary.yml)
+- [Status](https://status.routific.com)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** info@apievangelist.com
-**URL:** https://apievangelist.com
+**Kin Score 43.7** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 67.7 |
+| Contract governance | 27.3 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 34.5 |
+| Access clarity | 31.6 |
+
+**Agent readiness 24.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 16.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/routific/](https://apis.io/providers/routific/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Routific: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/routific/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
